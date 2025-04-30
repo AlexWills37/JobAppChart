@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class ApplicationItemViewModel: ObservableObject {
+class ApplicationItemViewModel: ObservableObject, Identifiable {
     //private var model: ApplicationItem
     @Published var companyName: String = "Peanut Company"
     @Published var positionTitle: String = "Software Engineer I"
@@ -24,22 +24,34 @@ class ApplicationItemViewModel: ObservableObject {
     var subscriptions = Set<AnyCancellable>()
     var count: Int = 0
     
+    init(companyName: String, positionTitle: String, websiteLink: String, status: String, dateApplied: Date) {
+        self.companyName = companyName
+        self.positionTitle = positionTitle
+        self.websiteLink = websiteLink
+        self.status = status
+        self.dateApplied = dateApplied
+        self.daysSinceUpdate = daysSinceUpdate
+        self.statusColor = statusColor
+        
+        setup()
+    }
     init() {
-
-        self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
         setup()
     }
     
     func setup() {
         
+        self.updateDaysSinceStatusUpdate()
         
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: nil, queue: .main) { [weak self] _ in
             guard let self else {return}
-            self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
-            print("Updated date")
-            
+            self.updateDaysSinceStatusUpdate()
         }
 
+    }
+    
+    func updateDaysSinceStatusUpdate() {
+        self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
     }
     
     

@@ -10,6 +10,10 @@ import SwiftUI
 struct ApplicationItemListView: View {
     let gradientSpacerSize = 70.0
     @State private var scrollPosition: CGPoint = .zero
+    
+    let vm = ApplicationItemListViewModel()
+    
+    
     var body: some View {
         ScrollView {
 
@@ -17,9 +21,8 @@ struct ApplicationItemListView: View {
                 // Spacers surrounding the list help to stop the gradient mask from hiding the first and last elements.
                 Spacer()
                     .frame(height: gradientSpacerSize)
-                ForEach(Range(1...30)) { _ in
-                    ApplicationItemView()
-                        .border(.blue)
+                ForEach(vm.itemsToShow) { itemViewModel in
+                    ApplicationItemView(vm: itemViewModel)
                 }
                 Spacer()
                     .frame(height: gradientSpacerSize)
