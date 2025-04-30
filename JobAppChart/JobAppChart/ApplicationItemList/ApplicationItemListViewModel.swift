@@ -7,13 +7,23 @@
 import Combine
 import Foundation
 
-class ApplicationItemListViewModel {
+class ApplicationItemListViewModel: ObservableObject {
     @Published var itemsToShow: [ApplicationItemViewModel] = []
         
-    
+    var subscriptions = Set<AnyCancellable>()
     
     init() {
         addTestData()
+        Timer.publish(every: 3, on: .main, in: .common)
+            .autoconnect()
+            .sink(receiveValue: {[weak self] _ in
+                guard let self else {return}
+                self.itemsToShow.append(ApplicationItemViewModel())
+                if (self.itemsToShow.count > 10) {
+                    self.subscriptions.removeFirst()
+                }
+            })
+            .store(in: &self.subscriptions)
     }
     
     func addTestData() {

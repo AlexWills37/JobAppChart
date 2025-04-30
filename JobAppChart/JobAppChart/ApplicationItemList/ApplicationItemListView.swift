@@ -11,8 +11,7 @@ struct ApplicationItemListView: View {
     let gradientSpacerSize = 70.0
     @State private var scrollPosition: CGPoint = .zero
     
-    let vm = ApplicationItemListViewModel()
-    
+    @StateObject var vm = ApplicationItemListViewModel()
     
     var body: some View {
         ScrollView {
