@@ -21,8 +21,11 @@ struct ApplicationItemView: View {
                     .font(.subheadline)
             }
             Spacer()
-            Text("\(vm.status)")
-            Text("\(vm.daysSinceUpdate)")
+            VStack {
+                Text("\(vm.daysSinceUpdate) days ago")
+                    .font(.caption)
+                Text("\(vm.status)")
+            }
 
             
         }

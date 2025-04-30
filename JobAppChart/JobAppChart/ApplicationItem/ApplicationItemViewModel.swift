@@ -31,23 +31,7 @@ class ApplicationItemViewModel: ObservableObject {
     }
     
     func setup() {
-        Timer.publish(every: 3, on: .main, in: .common)
-            .autoconnect()
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else {return}
-                
-                self.count += 1
-                if (self.count % 2 == 0) {
-                    self.statusColor = .blue
-                }
-                else {
-                    self.statusColor = .orange
-                }
-
-
-                
-            })
-            .store(in: &self.subscriptions)
+        
         
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: nil, queue: .main) { [weak self] _ in
             guard let self else {return}
