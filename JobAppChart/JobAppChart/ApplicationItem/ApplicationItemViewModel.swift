@@ -18,7 +18,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
     @Published var dateApplied: Date = Date().addingTimeInterval(-1 * 60 * 60 * 24 * 20)
     @Published var daysSinceUpdate = 0
     
-    @Published var statusColor = Color.orange
+    @Published var statusColor = Color(#colorLiteral(red: 0.8320404887, green: 0.9654800296, blue: 0.9295234084, alpha: 1))
     
     var test: AnyCancellable?
     var subscriptions = Set<AnyCancellable>()

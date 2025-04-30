@@ -32,7 +32,8 @@ struct ApplicationItemView: View {
         .padding()
         .background(Rectangle()
             .foregroundStyle(vm.statusColor))
-        .border(.black, width: 3)
+        .border(.separator, width: 1)
+        
         .cornerRadius(3)
     }
 }
