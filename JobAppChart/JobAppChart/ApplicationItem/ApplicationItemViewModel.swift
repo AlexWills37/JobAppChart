@@ -1,0 +1,38 @@
+//
+//  ApplicationItemViewModel.swift
+//  JobAppChart
+//
+//  Created by Alex on 4/30/25.
+//
+
+import Foundation
+import SwiftUI
+import Combine
+
+class ApplicationItemViewModel: ObservableObject {
+    //private var model: ApplicationItem
+    @Published var companyName: String = "Peanut Company"
+    @Published var positionTitle: String = "Software Engineer I"
+    @Published var websiteLink: String = ""
+    @Published var status: String = "Applied"
+    @Published var dateApplied: Date = Date().addingTimeInterval(-1 * 60 * 60 * 24 * 20)
+    @Published var daysSinceUpdate = 0
+    
+    @Published var statusColor = Color.orange
+    
+    var test: AnyCancellable?
+    var subscriptions = Set<AnyCancellable>()
+    var count: Int = 0
+    
+    init() {
+
+        self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
+        setup()
+    }
+    
+    func setup() {
+
+    }
+    
+    
+}
