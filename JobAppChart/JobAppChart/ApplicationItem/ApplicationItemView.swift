@@ -14,7 +14,7 @@ struct ApplicationItemView: View {
     
     var body: some View {
         HStack {
-            VStack {
+            VStack(alignment: .leading) {
                 Text("\(vm.companyName)")
                     .font(.headline)
                 Text("\(vm.positionTitle)")
