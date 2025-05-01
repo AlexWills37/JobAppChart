@@ -10,39 +10,48 @@ import SwiftUI
 import Combine
 
 class ApplicationItemViewModel: ObservableObject, Identifiable {
-    //private var model: ApplicationItem
-    @Published var companyName: String = "Peanut Company"
-    @Published var positionTitle: String = "Software Engineer I"
-    @Published var websiteLink: String = ""
-    @Published var status: String = "Applied"
-    @Published var dateApplied: Date = Date().addingTimeInterval(-1 * 60 * 60 * 24 * 20)
-    @Published var daysSinceUpdate = 0
+    private var model: ApplicationItem
     
-    @Published var statusColor = Color(#colorLiteral(red: 0.8320404887, green: 0.9654800296, blue: 0.9295234084, alpha: 1))
+    // Exposed values from model
+    @Published var companyName: String
+    @Published var positionTitle: String
+    @Published var websiteLink: String
+    @Published var status: String
+    @Published var dateApplied: Date?
     
-    var test: AnyCancellable?
+    // Calculated values
+    @Published var daysSinceUpdate: Int = 0
+    @Published var statusColor: Color = Color(#colorLiteral(red: 0.8320404887, green: 0.9654800296, blue: 0.9295234084, alpha: 1))
+    
     var subscriptions = Set<AnyCancellable>()
-    var count: Int = 0
     
-    init(companyName: String, positionTitle: String, websiteLink: String, status: String, dateApplied: Date) {
-        self.companyName = companyName
-        self.positionTitle = positionTitle
-        self.websiteLink = websiteLink
-        self.status = status
-        self.dateApplied = dateApplied
-        self.daysSinceUpdate = daysSinceUpdate
-        self.statusColor = statusColor
-        
-        setup()
-    }
-    init() {
-        setup()
-    }
-    
-    func setup() {
-        
+    init(itemModel: ApplicationItem) {
+        self.model = itemModel
+        self.companyName = itemModel.companyName
+        self.positionTitle = itemModel.positionTitle
+//            self.websiteLink = item.
+        self.status = itemModel.status
+        self.dateApplied = itemModel.dateApplied
+        self.websiteLink = ""
         self.updateDaysSinceStatusUpdate()
+
+        setUpSubscriptions()
+    }
+    
+    func setUpSubscriptions() {
+        self.model.$companyName
+            .combineLatest(self.model.$positionTitle, self.model.$status)
+            .sink(receiveValue: { [weak self] company, position, status in
+                guard let self = self else {return}
+                self.companyName = company
+                self.positionTitle = position
+                self.status = status
+                
+            })
+        .store(in: &self.subscriptions)
         
+        
+        // Refresh the daysSinceUpdate count when the calendar changes
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: nil, queue: .main) { [weak self] _ in
             guard let self else {return}
             self.updateDaysSinceStatusUpdate()
@@ -51,6 +60,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
     }
     
     func updateDaysSinceStatusUpdate() {
+        guard let dateApplied = dateApplied else {return}
         self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
     }
     

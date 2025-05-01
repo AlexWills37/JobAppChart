@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ApplicationItemView: View {
     
-    
-    @StateObject var vm = ApplicationItemViewModel()
+    @StateObject var vm: ApplicationItemViewModel
     
     var body: some View {
         HStack {
@@ -21,7 +20,7 @@ struct ApplicationItemView: View {
                     .font(.subheadline)
             }
             Spacer()
-            VStack {
+            VStack(alignment: .trailing) {
                 Text("\(vm.daysSinceUpdate) days ago")
                     .font(.caption)
                 Text("\(vm.status)")
@@ -39,5 +38,6 @@ struct ApplicationItemView: View {
 }
 
 #Preview {
-    ApplicationItemView()
+    let model = ApplicationItem(companyName: "Peanut Factory", positionTitle: "Tester", dateApplied: Date().addingTimeInterval(60 * 60 * 24 * -5), status: "Applieid")
+    ApplicationItemView(vm: ApplicationItemViewModel(itemModel: model))
 }

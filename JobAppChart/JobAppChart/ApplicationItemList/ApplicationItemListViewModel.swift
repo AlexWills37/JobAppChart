@@ -14,11 +14,12 @@ class ApplicationItemListViewModel: ObservableObject {
     
     init() {
         addTestData()
-        Timer.publish(every: 3, on: .main, in: .common)
+        Timer.publish(every: 0.5, on: .main, in: .common)
             .autoconnect()
             .sink(receiveValue: {[weak self] _ in
                 guard let self else {return}
-                self.itemsToShow.append(ApplicationItemViewModel())
+                self.itemsToShow.append(ApplicationItemViewModel(itemModel: ApplicationItem(companyName: "Jelly Beans", positionTitle: "Flavor Tester", dateApplied: Date.distantPast, status: "Applied?")))
+//                self.itemsToShow.append(ApplicationItemViewModel())
                 if (self.itemsToShow.count > 10) {
                     self.subscriptions.removeFirst()
                 }
@@ -27,12 +28,12 @@ class ApplicationItemListViewModel: ObservableObject {
     }
     
     func addTestData() {
-        self.itemsToShow.append(contentsOf: [
-            ApplicationItemViewModel(companyName: "Arthrex", positionTitle: "Software Engineer", websiteLink: "", status: "Applied", dateApplied: Date().addingTimeInterval(-1 * 60 * 60 * 24 * 20)),
-            ApplicationItemViewModel(companyName: "Peanut Factory", positionTitle: "Peanut Manager", websiteLink: "", status: "Applied", dateApplied: Date().addingTimeInterval(-1 * 60 * 60 * 24 * 21)),
-            ApplicationItemViewModel(companyName: "Google", positionTitle: "Person who writes the search results", websiteLink: "", status: "Applied", dateApplied: Date().addingTimeInterval(-1 * 60 * 60 * 24 * 20)),
-            ApplicationItemViewModel(companyName: "Zoo", positionTitle: "Penguin Feeder", websiteLink: "", status: "Applied", dateApplied: Date().addingTimeInterval(-1 * 60 * 60 * 24 * 20)),
-            ApplicationItemViewModel(companyName: "Space Station", positionTitle: "Chef", websiteLink: "", status: "Applied", dateApplied: Date().addingTimeInterval(-1 * 60 * 60 * 24 * 20)),
-        ])
+
+        self.itemsToShow.append(ApplicationItemViewModel(itemModel: ApplicationItem(companyName: "Jelly Beans", positionTitle: "Flavor Tester", dateApplied: Date.distantPast, status: "Applied?")))
+        self.itemsToShow.append(ApplicationItemViewModel(itemModel: ApplicationItem(companyName: "Google", positionTitle: "The guy who writes the search results", dateApplied: Date.distantPast, status: "Awaiting response")))
+        self.itemsToShow.append(ApplicationItemViewModel(itemModel: ApplicationItem(companyName: "Carnival", positionTitle: "Dunk Tank Tester", dateApplied: Date.now, status: "Take home test")))
+        self.itemsToShow.append(ApplicationItemViewModel(itemModel: ApplicationItem(companyName: "Company", positionTitle: "Job", dateApplied: Date.now, status: "Applied")))
+        self.itemsToShow.append(ApplicationItemViewModel(itemModel: ApplicationItem(companyName: "Uber", positionTitle: "Conversation starter", dateApplied: Date.now, status: "Offer received")))
+        self.itemsToShow.append(ApplicationItemViewModel(itemModel: ApplicationItem(companyName: "Crayola", positionTitle: "Crayon Namer", dateApplied: Date.distantPast, status: "Interviewing")))
     }
 }
