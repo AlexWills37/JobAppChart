@@ -11,6 +11,7 @@ import Combine
 
 class ApplicationItemViewModel: ObservableObject, Identifiable {
     private var model: ApplicationItem
+    var id: UUID
     
     // Exposed values from model
     @Published var companyName: String
@@ -26,6 +27,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
     var subscriptions = Set<AnyCancellable>()
     
     init(itemModel: ApplicationItem) {
+        self.id = itemModel.id
         self.model = itemModel
         self.companyName = itemModel.companyName
         self.positionTitle = itemModel.positionTitle

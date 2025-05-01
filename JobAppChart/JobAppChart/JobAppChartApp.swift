@@ -25,9 +25,9 @@ struct JobAppChartApp: App {
 
     var body: some Scene {
         WindowGroup {
-            //ContentView()
+//            ContentView()
 //            ApplicationItemListView()
-            ApplicationListScreenView()
+//            ApplicationListScreenView()
         }
         .modelContainer(sharedModelContainer)
     }
