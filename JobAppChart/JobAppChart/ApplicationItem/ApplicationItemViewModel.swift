@@ -41,16 +41,16 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
     }
     
     func setUpSubscriptions() {
-        self.model.$companyName
-            .combineLatest(self.model.$positionTitle, self.model.$status)
-            .sink(receiveValue: { [weak self] company, position, status in
-                guard let self = self else {return}
-                self.companyName = company
-                self.positionTitle = position
-                self.status = status
-                
-            })
-        .store(in: &self.subscriptions)
+//        self.model.$companyName
+//            .combineLatest(self.model.$positionTitle, self.model.$status)
+//            .sink(receiveValue: { [weak self] company, position, status in
+//                guard let self = self else {return}
+//                self.companyName = company
+//                self.positionTitle = position
+//                self.status = status
+//                
+//            })
+//        .store(in: &self.subscriptions)
         
         
         // Refresh the daysSinceUpdate count when the calendar changes

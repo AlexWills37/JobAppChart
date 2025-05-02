@@ -6,13 +6,30 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ApplicationItemListView: View {
+    @Query var tests: [ApplicationItem]
     let gradientSpacerSize = 70.0
     
     @StateObject var vm = ApplicationItemListViewModel()
     
     var body: some View {
+        Button("Hi") {
+            modelContext.insert(ApplicationItem(positionTitle: "HIEHI"))
+        }
+        Button("Test") {
+            vm.fetchData()
+            do {
+                let i = try modelContext.fetch(FetchDescriptor<ApplicationItem>()).count
+                print("Found \(i) things in the view")
+            } catch {}
+        }
+        ForEach(tests) { entry in
+            Text("\(entry.positionTitle)")
+                .frame(width: 100, height: 50)
+                .border(.blue)
+        }
         ScrollView {
 
             // Spacers surrounding the list help to stop the gradient mask from hiding the first and last elements.
@@ -39,5 +56,5 @@ struct ApplicationItemListView: View {
 }
 
 #Preview {
-    ApplicationItemListView()
+    ApplicationItemListView().modelContainer(for: ApplicationItem.self, inMemory: false)
 }
