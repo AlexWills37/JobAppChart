@@ -10,31 +10,16 @@ import SwiftData
 
 struct ApplicationItemListView: View {
     let gradientSpacerSize = 70.0
-    let storageService = LocalStorageService.shared
     
     @StateObject var vm = ApplicationItemListViewModel()
     
     var body: some View {
-        Button("Hi") {
-//            modelContext.insert(ApplicationItem(positionTitle: "HIEHI"))
-        }
-        Button("Test") {
-//            do {
-//                let i = try modelContext.fetch(FetchDescriptor<ApplicationItem>()).count
-//                print("Found \(i) things in the view")
-//            } catch {}
-            vm.addItem()
-        }
-//        ForEach(tests) { entry in
-//            Text("\(entry.positionTitle)")
-//                .frame(width: 100, height: 50)
-//                .border(.blue)
-//        }
         ScrollView {
 
             // Spacers surrounding the list help to stop the gradient mask from hiding the first and last elements.
             Spacer()
                 .frame(height: gradientSpacerSize)
+            // View Model contains a list of ApplicationItem View Models to display with ApplicationItem views
             LazyVStack(spacing: 0){
                 ForEach(vm.itemsToShow) { itemViewModel in
                     ApplicationItemView(vm: itemViewModel)
