@@ -9,12 +9,7 @@ import SwiftUI
 
 struct ApplicationEditorView: View {
     
-    @State var name: String = ""
-    @State var date: Date = Date.now
-    @State var status: String = "Interview"
-    @State var notes: String =  "(optional)"
-    
-    
+    @StateObject var vm = ApplicationEditorViewModel()
     
     var range: ClosedRange<Date> = {
         let calendar = Calendar.current
@@ -52,30 +47,30 @@ struct ApplicationEditorView: View {
             }
             .padding()
             
-            TextField("Company Name", text: $name)
+            TextField("Company Name", text: $vm.companyName)
                 .padding(.top, 20)
             Divider()
                 .frame(height: 1)
                 .padding(.horizontal)
-            TextField("Position Title", text: $name)
+            TextField("Position Title", text: $vm.positionTitle)
                 .padding(.top, 20)
             Divider()
                 .frame(height: 1)
                 .padding(.horizontal)
-            TextField("Website Link (optional)", text: $name)
+            TextField("Website Link (optional)", text: $vm.websiteLink)
                 .padding(.top, 20)
             Divider()
                 .frame(height: 1)
                 .padding(.horizontal)
 
-            DatePicker("Applied on:", selection: $date, in: range, displayedComponents: [.date])
+            DatePicker("Applied on:", selection: $vm.dateApplied, in: range, displayedComponents: [.date])
                 .frame(width: 250)
                 .padding(.top, 20)
 
             
             HStack {
                 Text("Application Status:")
-                Picker("Application Status", selection: $status) {
+                Picker("Application Status", selection: $vm.status) {
                     Text("Applied").tag("Applied")
                     Text("Interviewing").tag("Interview")
                     
@@ -90,12 +85,15 @@ struct ApplicationEditorView: View {
                 Text("Additional notes")
                     
                     .frame(maxWidth: .infinity, alignment: .leading)
-                TextEditor(text: $notes)
+                TextEditor(text: $vm.notes)
                     .frame(height: 250)
-//                    .border(.black, width: 1)
                     .scrollContentBackground(.hidden)
                     .background(Color(#colorLiteral(red: 0.8952754736, green: 0.8952754736, blue: 0.8952754736, alpha: 1)))
                     .multilineTextAlignment(.leading)
+                    .mask {
+                        Rectangle()
+                            .cornerRadius(10)
+                    }
             }
             .padding(.horizontal, 30)
             Spacer()

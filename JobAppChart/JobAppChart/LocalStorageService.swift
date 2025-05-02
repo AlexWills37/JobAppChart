@@ -16,7 +16,7 @@ class LocalStorageService {
     
     private let configuration = ModelConfiguration(isStoredInMemoryOnly: false, allowsSave: true)
 
-    private let container: ModelContainer
+    private var container: ModelContainer
     
     private init() {
         container = try! ModelContainer(for: ApplicationItem.self, configurations: configuration)

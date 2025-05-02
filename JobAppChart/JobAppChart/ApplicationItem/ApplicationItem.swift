@@ -20,11 +20,15 @@ import SwiftData
     var dateApplied: Date
     /// Current, updateable status of the application.
     var status: String
+    var notes: String
+    var websiteLink: String
     
-    init(companyName: String = "", positionTitle: String = "", dateApplied: Date = Date.now, status: String = "") {
+    init(companyName: String = "", positionTitle: String = "", dateApplied: Date = Date.now, status: String = "", websiteLink: String = "") {
         self.companyName = companyName
         self.positionTitle = positionTitle
         self.dateApplied = dateApplied
         self.status = status
+        self.websiteLink = websiteLink
+        self.notes = ""
     }
 }

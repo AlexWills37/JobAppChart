@@ -38,6 +38,6 @@ struct ApplicationItemView: View {
 }
 
 #Preview {
-    let model = ApplicationItem(companyName: "Peanut Factory", positionTitle: "Tester", dateApplied: Date().addingTimeInterval(60 * 60 * 24 * -5), status: "Applieid")
-    ApplicationItemView(vm: ApplicationItemViewModel(itemModel: model))
+//    let model = ApplicationItem(companyName: "Peanut Factory", positionTitle: "Tester", dateApplied: Date().addingTimeInterval(60 * 60 * 24 * -5), status: "Applieid")
+    ApplicationItemView(vm: ApplicationItemViewModel(itemModel: ApplicationItem() ))
 }

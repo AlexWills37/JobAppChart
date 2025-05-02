@@ -33,7 +33,6 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
         self.model = itemModel
         self.companyName = itemModel.companyName
         self.positionTitle = itemModel.positionTitle
-//            self.websiteLink = item.
         self.status = itemModel.status
         self.dateApplied = itemModel.dateApplied
         self.websiteLink = ""
