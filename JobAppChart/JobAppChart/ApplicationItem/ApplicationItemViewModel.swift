@@ -9,18 +9,20 @@ import Foundation
 import SwiftUI
 import Combine
 
+/// View Model exposing an ApplicationItem's base values and calculated properties.
 class ApplicationItemViewModel: ObservableObject, Identifiable {
     private var model: ApplicationItem
+    
     var id: UUID
     
-    // Exposed values from model
+    // MARK: Directly exposed model values.
     @Published var companyName: String
     @Published var positionTitle: String
     @Published var websiteLink: String
     @Published var status: String
     @Published var dateApplied: Date?
     
-    // Calculated values
+    // MARK: Calculated values for the view.
     @Published var daysSinceUpdate: Int = 0
     @Published var statusColor: Color = Color(#colorLiteral(red: 0.8320404887, green: 0.9654800296, blue: 0.9295234084, alpha: 1))
     
@@ -41,18 +43,6 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
     }
     
     func setUpSubscriptions() {
-//        self.model.$companyName
-//            .combineLatest(self.model.$positionTitle, self.model.$status)
-//            .sink(receiveValue: { [weak self] company, position, status in
-//                guard let self = self else {return}
-//                self.companyName = company
-//                self.positionTitle = position
-//                self.status = status
-//                
-//            })
-//        .store(in: &self.subscriptions)
-        
-        
         // Refresh the daysSinceUpdate count when the calendar changes
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: nil, queue: .main) { [weak self] _ in
             guard let self else {return}

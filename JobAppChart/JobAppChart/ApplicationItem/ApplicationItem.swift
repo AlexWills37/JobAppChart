@@ -6,31 +6,19 @@
 //
 
 import Foundation
-//import Combine
-//
-//class ApplicationItem: ObservableObject {
-//    var id = UUID()
-//    @Published var companyName: String = ""
-//    @Published var positionTitle: String = ""
-//    @Published var dateApplied: Date = Date.now
-//    @Published var status: String = ""
-//    
-//    init(companyName: String, positionTitle: String, dateApplied: Date, status: String) {
-//        
-//        self.companyName = companyName
-//        self.positionTitle = positionTitle
-//        self.dateApplied = dateApplied
-//        self.status = status
-//
-//    }
-//}
-
 import SwiftData
+
+/// The Model for ApplicationItems, stored locally with SwiftData.
 @Model class ApplicationItem {
-    var id = UUID()
+    /// Unique ID to prevent duplicates in SwiftData.
+    @Attribute(.unique) var id = UUID()
+    
+    /// Name of the company this Application is with.
     var companyName: String
+    /// Title of the position/target this Applilcation is for.
     var positionTitle: String
     var dateApplied: Date
+    /// Current, updateable status of the application.
     var status: String
     
     init(companyName: String = "", positionTitle: String = "", dateApplied: Date = Date.now, status: String = "") {
