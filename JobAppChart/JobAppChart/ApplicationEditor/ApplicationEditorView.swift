@@ -22,7 +22,7 @@ struct ApplicationEditorView: View {
     }()
     
     var body: some View {
-        VStack(alignment: .center) {
+        VStack(alignment: .center, spacing: 5) {
             HStack {
                 Button {
                     
@@ -50,12 +50,25 @@ struct ApplicationEditorView: View {
             .padding()
             
             TextField("Company Name", text: $name)
+                .padding(.top, 20)
+            Divider()
+                .frame(height: 1)
+                .padding(.horizontal)
             TextField("Position Title", text: $name)
+                .padding(.top, 20)
+            Divider()
+                .frame(height: 1)
+                .padding(.horizontal)
             TextField("Website Link", text: $name)
-            
+                .padding(.top, 20)
+            Divider()
+                .frame(height: 1)
+                .padding(.horizontal)
+
             DatePicker("Applied on:", selection: $date, in: range, displayedComponents: [.date])
                 .frame(width: 250)
-                
+                .padding(.top, 20)
+
             
             HStack {
                 Text("Application Status:")
@@ -67,8 +80,10 @@ struct ApplicationEditorView: View {
                 .foregroundStyle(.black)
                 .pickerStyle(.menu)
             }
-            
+            .padding(.top, 20)
+
             Text("Additional notes")
+                .padding(.top, 20)
             TextEditor(text: $name)
                 .border(.blue, width: 1)
                 .foregroundStyle(.purple)
