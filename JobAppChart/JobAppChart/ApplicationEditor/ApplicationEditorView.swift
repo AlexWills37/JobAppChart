@@ -12,6 +12,9 @@ struct ApplicationEditorView: View {
     @State var name: String = ""
     @State var date: Date = Date.now
     @State var status: String = "Interview"
+    @State var notes: String =  "(optional)"
+    
+    
     
     var range: ClosedRange<Date> = {
         let calendar = Calendar.current
@@ -59,7 +62,7 @@ struct ApplicationEditorView: View {
             Divider()
                 .frame(height: 1)
                 .padding(.horizontal)
-            TextField("Website Link", text: $name)
+            TextField("Website Link (optional)", text: $name)
                 .padding(.top, 20)
             Divider()
                 .frame(height: 1)
@@ -80,19 +83,36 @@ struct ApplicationEditorView: View {
                 .foregroundStyle(.black)
                 .pickerStyle(.menu)
             }
-            .padding(.top, 20)
+            .padding(.vertical, 20)
 
-            Text("Additional notes")
-                .padding(.top, 20)
-            TextEditor(text: $name)
-                .border(.blue, width: 1)
-                .foregroundStyle(.purple)
+            VStack(spacing: 5) {
+                
+                Text("Additional notes")
+                    
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                TextEditor(text: $notes)
+                    .frame(height: 250)
+//                    .border(.black, width: 1)
+                    .scrollContentBackground(.hidden)
+                    .background(Color(#colorLiteral(red: 0.8952754736, green: 0.8952754736, blue: 0.8952754736, alpha: 1)))
+                    .multilineTextAlignment(.leading)
+            }
+            .padding(.horizontal, 30)
             Spacer()
         }
         .multilineTextAlignment(.center)
+        .background(
+            Rectangle()
+                .ignoresSafeArea()
+                .foregroundStyle(.white)
+                .cornerRadius(20)
+        )
     }
 }
 
 #Preview {
-    ApplicationEditorView()
+    ZStack {
+        Color(#colorLiteral(red: 0.721568644, green: 0.8862745166, blue: 0.5921568871, alpha: 1)).ignoresSafeArea()
+        ApplicationEditorView()
+    }
 }
