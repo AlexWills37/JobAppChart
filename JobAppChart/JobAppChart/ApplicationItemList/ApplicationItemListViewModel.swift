@@ -27,7 +27,6 @@ class ApplicationItemListViewModel: ObservableObject {
     
     
     func addItem() {
-        print("Saving item")
         try! LocalStorageService.shared.saveEntry(toSave: ApplicationItem(positionTitle: "HEHEHEHO"))
         itemsToShow = LocalStorageService.shared.getAllData().map({ itemModel in
             return ApplicationItemViewModel(itemModel: itemModel)

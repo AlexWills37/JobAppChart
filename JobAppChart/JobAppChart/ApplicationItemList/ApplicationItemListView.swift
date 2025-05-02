@@ -14,6 +14,9 @@ struct ApplicationItemListView: View {
     @StateObject var vm = ApplicationItemListViewModel()
     
     var body: some View {
+        Button("Add Test Entry") {
+            vm.addItem()
+        }
         ScrollView {
 
             // Spacers surrounding the list help to stop the gradient mask from hiding the first and last elements.
