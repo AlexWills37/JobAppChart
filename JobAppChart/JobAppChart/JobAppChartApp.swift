@@ -26,10 +26,10 @@ struct JobAppChartApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+//            ContentView()
 //            ApplicationItemListView()
-//            ApplicationListScreenView()
+            ApplicationListScreenView()
         }
-        .modelContainer(for: ItemDBModel.self)
+//        .modelContainer(for: ItemDBModel.self)
     }
 }

@@ -11,7 +11,6 @@ import SwiftUI
 
 class ApplicationItemListViewModel: ObservableObject {
 //    @Query var allItems: [ApplicationItem]
-    @Environment(\.modelContext) var modelContext
     @Published var itemsToShow: [ApplicationItemViewModel] = []
         
     var subscriptions = Set<AnyCancellable>()
@@ -26,14 +25,25 @@ class ApplicationItemListViewModel: ObservableObject {
 //            }
 //            .store(in: &subscriptions)
 //        print(modelContext)
-    }
+        LocalStorageService.shared.getAllData().publisher
+            .map { itemModel in
+                return ApplicationItemViewModel(itemModel: itemModel)
+            }
+            .sink { [weak self] itemVM in
+                guard let self = self else {return}
+                itemsToShow.append(itemVM)
+            }
+            .store(in: &subscriptions)
+//    }
     
-    func fetchData() {
-        let descriptor = FetchDescriptor<ApplicationItem>()
-        do {
-            let i = try modelContext.fetch(FetchDescriptor<ApplicationItem>()).count
-            print("Found \(i) things in the vm")
-        } catch {}
+        
+    }
+    func addItem() {
+        print("Saving item")
+        try! LocalStorageService.shared.saveEntry(toSave: ApplicationItem(positionTitle: "HEHEHEHO"))
+        itemsToShow = LocalStorageService.shared.getAllData().map({ itemModel in
+            return ApplicationItemViewModel(itemModel: itemModel)
+        })
         
     }
     
