@@ -35,7 +35,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
         self.positionTitle = itemModel.positionTitle
         self.status = itemModel.status
         self.dateApplied = itemModel.dateApplied
-        self.websiteLink = ""
+        self.websiteLink = itemModel.websiteLink
         self.updateDaysSinceStatusUpdate()
 
         setUpSubscriptions()
@@ -48,6 +48,15 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
             self.updateDaysSinceStatusUpdate()
         }
 
+    }
+    
+    func refreshDataFromModel() {
+        self.companyName = model.companyName
+        self.positionTitle = model.positionTitle
+        self.status = model.status
+        self.dateApplied = model.dateApplied
+        self.websiteLink = model.websiteLink
+        self.updateDaysSinceStatusUpdate()
     }
     
     func updateDaysSinceStatusUpdate() {

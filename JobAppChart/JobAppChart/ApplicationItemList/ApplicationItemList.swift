@@ -18,7 +18,14 @@ class ApplicationItemList: ObservableObject {
    
     func addItem(toAdd: ApplicationItem) {
         try? LocalStorageService.shared.saveEntry(toSave: toAdd)
-        loadedApplications.append(toAdd)
+        if !loadedApplications.contains(where: { item in
+            item == toAdd
+        }){
+            
+            loadedApplications.append(toAdd)
+        }
+//        loadedApplications = []
+//        loadedApplications = LocalStorageService.shared.getAllData()
     }
     
 }

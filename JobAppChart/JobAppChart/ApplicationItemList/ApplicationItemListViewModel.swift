@@ -8,12 +8,13 @@ import Combine
 
 /// View Model that manages a list of ApplicationItems to dsiplay.
 class ApplicationItemListViewModel: ObservableObject {
+    static let shared = ApplicationItemListViewModel()
     @Published var itemsToShow: [ApplicationItemViewModel] = []
     let listModel = ApplicationItemList.shared
         
     var subscriptions = Set<AnyCancellable>()
     
-    init() {
+    private init() {
         addListSubscription()
     }
     
@@ -28,6 +29,11 @@ class ApplicationItemListViewModel: ObservableObject {
                 }
             }
             .store(in: &subscriptions)
+    }
+    func refreshViewModels() {
+        for vm in itemsToShow {
+            vm.refreshDataFromModel()
+        }
     }
     
 }

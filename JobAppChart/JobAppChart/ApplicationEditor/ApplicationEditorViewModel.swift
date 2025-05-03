@@ -23,10 +23,10 @@ class ApplicationEditorViewModel: ObservableObject {
         self.toEdit = toEdit
         self.companyName = toEdit.companyName
         self.positionTitle = toEdit.positionTitle
-        self.websiteLink = ""
+        self.websiteLink = toEdit.websiteLink
         self.dateApplied = toEdit.dateApplied
         self.status = toEdit.status
-        self.notes = ""
+        self.notes = toEdit.notes
         
     }
     
@@ -46,6 +46,7 @@ class ApplicationEditorViewModel: ObservableObject {
         toEdit.notes = self.notes
         
         ApplicationItemList.shared.addItem(toAdd: toEdit)
+        ApplicationItemListViewModel.shared.refreshViewModels()
         
         return toEdit
     }

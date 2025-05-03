@@ -20,9 +20,9 @@ struct ApplicationListScreenView: View {
                     
                         .padding(.horizontal)
                     ApplicationItemListView()
-//                        .navigationDestination(for: ApplicationItemViewModel.self) { itemVM in
-//                             ApplicationEditorView()
-//                        }
+                        .navigationDestination(for: ApplicationItemViewModel.self) { itemVM in
+                            ApplicationEditorView(vm: ApplicationEditorViewModel(toEdit: itemVM.model))
+                        }
                 }
                 NavigationLink(value: ApplicationItem()){
                     
