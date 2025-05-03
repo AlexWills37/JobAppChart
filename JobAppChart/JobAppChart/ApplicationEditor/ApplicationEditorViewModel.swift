@@ -45,7 +45,8 @@ class ApplicationEditorViewModel: ObservableObject {
         toEdit.status = self.status
         toEdit.notes = self.notes
         
-        try? LocalStorageService.shared.saveEntry(toSave: toEdit)
+        ApplicationItemList.shared.addItem(toAdd: toEdit)
+        
         return toEdit
     }
     

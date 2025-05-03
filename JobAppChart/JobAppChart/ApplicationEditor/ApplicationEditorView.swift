@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ApplicationEditorView: View {
+    @Environment(\.dismiss) private var dismiss
     
     @StateObject var vm = ApplicationEditorViewModel()
     
@@ -23,7 +24,7 @@ struct ApplicationEditorView: View {
         VStack(alignment: .center, spacing: 5) {
             HStack {
                 Button {
-                    
+                   dismiss()
                 } label: {
                     HStack(spacing: 5) {
                         Image(systemName: "chevron.backward")
@@ -40,7 +41,8 @@ struct ApplicationEditorView: View {
                     .lineLimit(2)
         
                 Button("Save") {
-                    
+                    vm.saveEntry()
+                    dismiss()
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 
@@ -105,6 +107,7 @@ struct ApplicationEditorView: View {
                 .foregroundStyle(.white)
                 .cornerRadius(20)
         )
+        .navigationBarBackButtonHidden()
     }
 }
 

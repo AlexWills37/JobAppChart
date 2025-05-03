@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 /// The Model for ApplicationItems, stored locally with SwiftData.
-@Model class ApplicationItem {
+@Model class ApplicationItem: Hashable {
     /// Unique ID to prevent duplicates in SwiftData.
     @Attribute(.unique) var id = UUID()
     

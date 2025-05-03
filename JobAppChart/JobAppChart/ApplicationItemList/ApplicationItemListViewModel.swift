@@ -9,27 +9,25 @@ import Combine
 /// View Model that manages a list of ApplicationItems to dsiplay.
 class ApplicationItemListViewModel: ObservableObject {
     @Published var itemsToShow: [ApplicationItemViewModel] = []
+    let listModel = ApplicationItemList.shared
         
     var subscriptions = Set<AnyCancellable>()
     
     init() {
-        // Get initial items from the database
-        LocalStorageService.shared.getAllData().publisher
-            .map { itemModel in
-                return ApplicationItemViewModel(itemModel: itemModel)
-            }
-            .sink { [weak self] itemVM in
+        addListSubscription()
+    }
+    
+    func addListSubscription() {
+        listModel.$loadedApplications
+            .sink { [weak self] newList in
                 guard let self = self else {return}
-                itemsToShow.append(itemVM)
+                // Update itemsToShow with the new contents of the list
+                self.itemsToShow = []
+                for item in newList {
+                    self.itemsToShow.append(ApplicationItemViewModel(itemModel: item))
+                }
             }
             .store(in: &subscriptions)
     }
     
-    
-    func addItem() {
-        try! LocalStorageService.shared.saveEntry(toSave: ApplicationItem(positionTitle: "HEHEHEHO"))
-        itemsToShow = LocalStorageService.shared.getAllData().map({ itemModel in
-            return ApplicationItemViewModel(itemModel: itemModel)
-        })
-    }
 }

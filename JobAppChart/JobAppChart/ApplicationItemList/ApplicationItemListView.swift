@@ -10,17 +10,12 @@ import SwiftData
 
 struct ApplicationItemListView: View {
     let gradientSpacerSize = 70.0
-    @State var offset = 5000.0
     
     @StateObject var vm = ApplicationItemListViewModel()
     
     var body: some View {
         ZStack {
             VStack {
-                Button("Add Test Entry") {
-                    vm.addItem()
-                    offset = 0.0
-                }
                 ScrollView {
 
                     // Spacers surrounding the list help to stop the gradient mask from hiding the first and last elements.
@@ -29,7 +24,9 @@ struct ApplicationItemListView: View {
                     // View Model contains a list of ApplicationItem View Models to display with ApplicationItem views
                     LazyVStack(spacing: 0){
                         ForEach(vm.itemsToShow) { itemViewModel in
-                            ApplicationItemView(vm: itemViewModel)
+                            NavigationLink(value: itemViewModel) {
+                                ApplicationItemView(vm: itemViewModel)
+                            }
                         }
                     }
                     .border(.black, width:3)
@@ -44,11 +41,10 @@ struct ApplicationItemListView: View {
                 .mask(
                     LinearGradient(colors: [Color.black, Color.black.opacity(0)], startPoint: UnitPoint(x: 0.5, y: 0.1), endPoint: .top)
                 )
-            }
-            ApplicationEditorView()
-                .offset(y: offset)
+                // End of scroll view
+            } // End of VStack
                 
-        }
+        } // End of ZStack
     }
 }
 

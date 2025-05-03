@@ -10,8 +10,8 @@ import SwiftUI
 import Combine
 
 /// View Model exposing an ApplicationItem's base values and calculated properties.
-class ApplicationItemViewModel: ObservableObject, Identifiable {
-    private var model: ApplicationItem
+class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
+    var model: ApplicationItem
     
     var id: UUID
     
@@ -55,5 +55,13 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
         self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
     }
     
+    // MARK: Conforming to Hashable and Equatable
+    static func == (lhs: ApplicationItemViewModel, rhs: ApplicationItemViewModel) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
     
 }
