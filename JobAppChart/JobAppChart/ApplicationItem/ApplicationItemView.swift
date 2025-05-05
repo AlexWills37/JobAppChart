@@ -34,10 +34,10 @@ struct ApplicationItemView: View {
         .border(.separator, width: 1)
         
         .cornerRadius(3)
+        .foregroundStyle(.black)
     }
 }
 
 #Preview {
-    let model = ApplicationItem(companyName: "Peanut Factory", positionTitle: "Tester", dateApplied: Date().addingTimeInterval(60 * 60 * 24 * -5), status: "Applieid")
-    ApplicationItemView(vm: ApplicationItemViewModel(itemModel: model))
+    ApplicationItemView(vm: ApplicationItemViewModel(itemModel: ApplicationItem() ))
 }

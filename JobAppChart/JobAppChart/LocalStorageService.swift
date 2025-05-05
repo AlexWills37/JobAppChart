@@ -16,7 +16,7 @@ class LocalStorageService {
     
     private let configuration = ModelConfiguration(isStoredInMemoryOnly: false, allowsSave: true)
 
-    private let container: ModelContainer
+    private var container: ModelContainer
     
     private init() {
         container = try! ModelContainer(for: ApplicationItem.self, configurations: configuration)
@@ -56,5 +56,12 @@ class LocalStorageService {
         }
         
         try context.save()
+    }
+    
+    func deleteEntry(toDelete: ApplicationItem) throws {
+        let toDeleteId = toDelete.id
+        let context = ModelContext(container)
+//        context.delete(toDelete) // Not sure why this doesn't work, since ApplicationItem is passed by reference (as a class). I'd like to look into it.
+        try context.delete(model: ApplicationItem.self, where: #Predicate {toDeleteId == $0.id})
     }
 }

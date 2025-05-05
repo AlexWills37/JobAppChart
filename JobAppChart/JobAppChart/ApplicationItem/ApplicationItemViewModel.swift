@@ -10,8 +10,8 @@ import SwiftUI
 import Combine
 
 /// View Model exposing an ApplicationItem's base values and calculated properties.
-class ApplicationItemViewModel: ObservableObject, Identifiable {
-    private var model: ApplicationItem
+class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
+    var model: ApplicationItem
     
     var id: UUID
     
@@ -33,28 +33,49 @@ class ApplicationItemViewModel: ObservableObject, Identifiable {
         self.model = itemModel
         self.companyName = itemModel.companyName
         self.positionTitle = itemModel.positionTitle
-//            self.websiteLink = item.
         self.status = itemModel.status
         self.dateApplied = itemModel.dateApplied
-        self.websiteLink = ""
+        self.websiteLink = itemModel.websiteLink
         self.updateDaysSinceStatusUpdate()
 
-        setUpSubscriptions()
+        addDailyUpdateSubscription()
     }
     
-    func setUpSubscriptions() {
+    /// Adds an observer to the system calendar to update the `daysSinceUpdate` field if the calendar day changes.
+    func addDailyUpdateSubscription() {
         // Refresh the daysSinceUpdate count when the calendar changes
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: nil, queue: .main) { [weak self] _ in
             guard let self else {return}
             self.updateDaysSinceStatusUpdate()
         }
-
     }
     
+    /// Resets all fields from the Model, as well as computed fields.
+    ///
+    /// Due to the ViewModel not being a `View`, these fields are not always synchronized.
+    /// Due to the Model being `Observable` and not an `ObservableObject`, the model's fields do not have publishers.
+    func refreshDataFromModel() {
+        self.companyName = model.companyName
+        self.positionTitle = model.positionTitle
+        self.status = model.status
+        self.dateApplied = model.dateApplied
+        self.websiteLink = model.websiteLink
+        self.updateDaysSinceStatusUpdate()
+    }
+    
+    /// Calculates the days since the `dateApplied` value, storing it in `daysSinceUpdate`.
     func updateDaysSinceStatusUpdate() {
         guard let dateApplied = dateApplied else {return}
         self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
     }
     
+    // MARK: - Conforming to Hashable and Equatable
+    static func == (lhs: ApplicationItemViewModel, rhs: ApplicationItemViewModel) -> Bool {
+        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
     
 }
