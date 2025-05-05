@@ -10,26 +10,37 @@ import Combine
 class ApplicationItemListViewModel: ObservableObject {
     static let shared = ApplicationItemListViewModel()
     @Published var itemsToShow: [ApplicationItemViewModel] = []
-    let listModel = ApplicationItemList.shared
+    var loadedItemModels: [ApplicationItem] = []
+    
+    var itemModelsToViewModels: [ApplicationItem: ApplicationItemViewModel] = [:]
+    
         
     var subscriptions = Set<AnyCancellable>()
     
     private init() {
-        addListSubscription()
+        loadedItemModels = LocalStorageService.shared.getAllData()
+        for model in loadedItemModels {
+            let viewModel = ApplicationItemViewModel(itemModel: model)
+            itemsToShow.append(viewModel)
+            itemModelsToViewModels[model] = viewModel
+        }
     }
     
-    func addListSubscription() {
-        listModel.$loadedApplications
-            .sink { [weak self] newList in
-                guard let self = self else {return}
-                // Update itemsToShow with the new contents of the list
-                self.itemsToShow = []
-                for item in newList {
-                    self.itemsToShow.append(ApplicationItemViewModel(itemModel: item))
-                }
-            }
-            .store(in: &subscriptions)
+    
+    func updateItemFromModel(toUpdate: ApplicationItem) {
+        
+        if !loadedItemModels.contains(where: { other in
+            return other == toUpdate
+        }) {
+            loadedItemModels.append(toUpdate)
+            let viewModel = ApplicationItemViewModel(itemModel: toUpdate)
+            itemsToShow.append(viewModel)
+            itemModelsToViewModels[toUpdate] = viewModel
+        }
+        
+        itemModelsToViewModels[toUpdate]?.refreshDataFromModel()
     }
+    
     func refreshViewModels() {
         for vm in itemsToShow {
             vm.refreshDataFromModel()
