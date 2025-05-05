@@ -75,7 +75,7 @@ class ApplicationEditorViewModel: ObservableObject {
     
     /// Deletes the entry being edited and removes it from the Item List.
     func deleteEntry() {
+        try? LocalStorageService.shared.deleteEntry(toDelete: toEdit)
         ApplicationItemListViewModel.shared.deleteItem(toDelete: toEdit)
-        LocalStorageService.shared.deleteEntry(toDelete: toEdit)
     }
 }
