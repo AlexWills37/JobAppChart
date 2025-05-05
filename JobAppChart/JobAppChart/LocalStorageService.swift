@@ -62,6 +62,6 @@ class LocalStorageService {
         let toDeleteId = toDelete.id
         let context = ModelContext(container)
 //        context.delete(toDelete) // Not sure why this doesn't work, since ApplicationItem is passed by reference (as a class). I'd like to look into it.
-        try? context.delete(model: ApplicationItem.self, where: #Predicate {toDeleteId == $0.id})
+        try context.delete(model: ApplicationItem.self, where: #Predicate {toDeleteId == $0.id})
     }
 }
