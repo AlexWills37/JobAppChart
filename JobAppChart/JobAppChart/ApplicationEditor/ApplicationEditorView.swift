@@ -13,6 +13,7 @@ struct ApplicationEditorView: View {
     @StateObject var vm = ApplicationEditorViewModel()
     @State var showingDeleteConfirmation = false
     
+    /// Range of selectable "applied" dates, from the year 2000 to today.
     var range: ClosedRange<Date> = {
         let calendar = Calendar.current
         let startComponents = DateComponents(year: 2000, month: 1, day: 1)
@@ -23,6 +24,8 @@ struct ApplicationEditorView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 5) {
+            
+            // MARK: - Title bar
             HStack {
                 Button {
                    dismiss()
@@ -50,6 +53,7 @@ struct ApplicationEditorView: View {
             }
             .padding()
             
+            // MARK: - Editor fields
             TextField("Company Name", text: $vm.companyName)
                 .padding(.top, 20)
             Divider()
@@ -99,6 +103,8 @@ struct ApplicationEditorView: View {
                     }
             }
             .padding(.horizontal, 30)
+            
+            // MARK: - Footer/delete button
             Spacer()
             Button("Delete") {
                 showingDeleteConfirmation = true

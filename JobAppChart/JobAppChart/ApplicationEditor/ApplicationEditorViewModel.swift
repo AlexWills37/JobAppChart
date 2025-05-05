@@ -9,7 +9,12 @@ import Foundation
 import Combine
 class ApplicationEditorViewModel: ObservableObject {
    
+    /// The Item object actively being worked on by this editor instance.
     private var toEdit: ApplicationItem
+    
+    var subscriptions = Set<AnyCancellable>()
+
+    // MARK: Fields directly tied to item model
     @Published var companyName: String
     @Published var positionTitle: String
     @Published var websiteLink: String
@@ -17,11 +22,10 @@ class ApplicationEditorViewModel: ObservableObject {
     @Published var status: String
     @Published var notes: String
     
+    // MARK: Computed values
     /// Whether `toEdit` is a new application being created (not in the database yet), or a previously existing application being edited.
     @Published var newApplication: Bool
     @Published var title: String = "Add a new application"
-    
-    var subscriptions = Set<AnyCancellable>()
     
     init(toEdit: ApplicationItem, isNew: Bool = false) {
         self.toEdit = toEdit
@@ -35,11 +39,13 @@ class ApplicationEditorViewModel: ObservableObject {
         addTitleSubscriber()
     }
     
+    /// Creates an Editor View Model with a new, empty application.
     convenience init() {
         let newApplicationItem = ApplicationItem(status: "Applied")
         self.init(toEdit: newApplicationItem, isNew: true)
     }
     
+    /// Listens to the job position and company name fields to update the editor's title when it changes.
     func addTitleSubscriber() {
         $positionTitle.combineLatest($companyName)
             .debounce(for: 0.2, scheduler: DispatchQueue.main)
@@ -51,7 +57,7 @@ class ApplicationEditorViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
     
-    
+    /// Saves the currently written values to the Application Item's model and updates the Item List.
     func saveEntry() -> ApplicationItem {
         // Update the actual Item model
         toEdit.companyName = self.companyName
@@ -67,6 +73,7 @@ class ApplicationEditorViewModel: ObservableObject {
         return toEdit
     }
     
+    /// Deletes the entry being edited and removes it from the Item List.
     func deleteEntry() {
         ApplicationItemListViewModel.shared.deleteItem(toDelete: toEdit)
         LocalStorageService.shared.deleteEntry(toDelete: toEdit)
