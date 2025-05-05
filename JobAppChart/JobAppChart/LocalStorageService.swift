@@ -57,4 +57,9 @@ class LocalStorageService {
         
         try context.save()
     }
+    
+    func deleteEntry(toDelete: ApplicationItem) {
+        let context = ModelContext(container)
+        context.delete(toDelete)
+    }
 }

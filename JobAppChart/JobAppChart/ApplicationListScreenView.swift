@@ -50,9 +50,6 @@ struct ApplicationListScreenView: View {
             }
 
         }
-        .navigationDestination(isPresented: $show) {
-            ApplicationEditorView()
-        }
 
    }
 }

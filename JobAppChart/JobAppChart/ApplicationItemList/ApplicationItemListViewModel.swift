@@ -47,4 +47,14 @@ class ApplicationItemListViewModel: ObservableObject {
         }
     }
     
+    func deleteItem(toDelete: ApplicationItem) {
+        itemsToShow.removeAll { viewModel in
+            viewModel.model == toDelete
+        }
+        itemModelsToViewModels.removeValue(forKey: toDelete)
+        loadedItemModels.removeAll { model in
+            model == toDelete
+        }
+    }
+    
 }

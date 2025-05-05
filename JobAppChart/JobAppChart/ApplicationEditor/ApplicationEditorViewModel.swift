@@ -17,6 +17,9 @@ class ApplicationEditorViewModel: ObservableObject {
     @Published var status: String
     @Published var notes: String
     
+    /// Whether `toEdit` is a new application being created (not in the database yet), or a previously existing application being edited.
+    @Published var newApplication: Bool = false
+    
     var test: AnyCancellable?
     
     init(toEdit: ApplicationItem) {
@@ -33,6 +36,7 @@ class ApplicationEditorViewModel: ObservableObject {
     convenience init() {
         let newApplicationItem = ApplicationItem(status: "Applied")
         self.init(toEdit: newApplicationItem)
+        self.newApplication = true
     }
     
     
@@ -49,6 +53,11 @@ class ApplicationEditorViewModel: ObservableObject {
         try? LocalStorageService.shared.saveEntry(toSave: toEdit)
 
         return toEdit
+    }
+    
+    func deleteEntry() {
+        ApplicationItemListViewModel.shared.deleteItem(toDelete: toEdit)
+        LocalStorageService.shared.deleteEntry(toDelete: toEdit)
     }
     
     

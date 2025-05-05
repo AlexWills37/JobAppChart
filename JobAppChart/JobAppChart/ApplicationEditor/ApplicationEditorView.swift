@@ -11,6 +11,7 @@ struct ApplicationEditorView: View {
     @Environment(\.dismiss) private var dismiss
     
     @StateObject var vm = ApplicationEditorViewModel()
+    @State var showingDeleteConfirmation = false
     
     var range: ClosedRange<Date> = {
         let calendar = Calendar.current
@@ -99,6 +100,19 @@ struct ApplicationEditorView: View {
             }
             .padding(.horizontal, 30)
             Spacer()
+            Button("Delete") {
+                showingDeleteConfirmation = true
+            }
+            .padding()
+            .confirmationDialog("Delete application", isPresented: $showingDeleteConfirmation, actions: {
+                Button("Delete", role: .destructive) {
+                    vm.deleteEntry()
+                    dismiss()
+                }
+                Button("Keep editing", role: .cancel) {}
+            })
+            .foregroundStyle(.red)
+            .opacity(vm.newApplication ? 0 : 1)
         }
         .multilineTextAlignment(.center)
         .background(
