@@ -35,7 +35,7 @@ struct ApplicationEditorView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("Create New Application")
+                Text("\(vm.title)")
                     .frame(maxWidth: .infinity, alignment: .center)
                     .multilineTextAlignment(.center)
                     .font(.headline)

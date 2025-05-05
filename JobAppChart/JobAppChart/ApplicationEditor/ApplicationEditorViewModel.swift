@@ -18,11 +18,12 @@ class ApplicationEditorViewModel: ObservableObject {
     @Published var notes: String
     
     /// Whether `toEdit` is a new application being created (not in the database yet), or a previously existing application being edited.
-    @Published var newApplication: Bool = false
+    @Published var newApplication: Bool
+    @Published var title: String = "Add a new application"
     
-    var test: AnyCancellable?
+    var subscriptions = Set<AnyCancellable>()
     
-    init(toEdit: ApplicationItem) {
+    init(toEdit: ApplicationItem, isNew: Bool = false) {
         self.toEdit = toEdit
         self.companyName = toEdit.companyName
         self.positionTitle = toEdit.positionTitle
@@ -30,13 +31,24 @@ class ApplicationEditorViewModel: ObservableObject {
         self.dateApplied = toEdit.dateApplied
         self.status = toEdit.status
         self.notes = toEdit.notes
-        
+        self.newApplication = isNew
+        addTitleSubscriber()
     }
     
     convenience init() {
         let newApplicationItem = ApplicationItem(status: "Applied")
-        self.init(toEdit: newApplicationItem)
-        self.newApplication = true
+        self.init(toEdit: newApplicationItem, isNew: true)
+    }
+    
+    func addTitleSubscriber() {
+        $positionTitle.combineLatest($companyName)
+            .debounce(for: 0.2, scheduler: DispatchQueue.main)
+            .sink { [weak self] position, title in
+                guard let self = self else {return}
+                guard !newApplication else {return}
+                self.title = "\(position) at \(title)"
+            }
+            .store(in: &subscriptions)
     }
     
     
@@ -59,7 +71,4 @@ class ApplicationEditorViewModel: ObservableObject {
         ApplicationItemListViewModel.shared.deleteItem(toDelete: toEdit)
         LocalStorageService.shared.deleteEntry(toDelete: toEdit)
     }
-    
-    
 }
-
