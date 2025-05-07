@@ -78,9 +78,9 @@ struct ApplicationEditorView: View {
             HStack {
                 Text("Application Status:")
                 Picker("Application Status", selection: $vm.status) {
-                    Text("Applied").tag("Applied")
-                    Text("Interviewing").tag("Interview")
-                    
+                    ForEach(vm.statuses, id: \.self) { status in
+                        Text(status).tag(status)
+                    }
                 }
                 .foregroundStyle(.black)
                 .pickerStyle(.menu)
