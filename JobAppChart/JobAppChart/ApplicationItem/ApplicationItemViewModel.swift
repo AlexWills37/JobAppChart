@@ -52,6 +52,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
         }
     }
     
+    /// Adds a subscription to the item's status to update `statusColor` when `status` changes.
     func addStatusUpdateSubscription() {
         self.$status
             .sink { [weak self] newStatus in

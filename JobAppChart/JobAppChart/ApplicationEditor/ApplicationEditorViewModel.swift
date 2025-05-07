@@ -26,6 +26,7 @@ class ApplicationEditorViewModel: ObservableObject {
     /// Whether `toEdit` is a new application being created (not in the database yet), or a previously existing application being edited.
     @Published var newApplication: Bool
     @Published var title: String = "Add a new application"
+    // List of status options for the user to choose.
     @Published var statusOptions: [String] = []
     
     init(toEdit: ApplicationItem, isNew: Bool = false) {
