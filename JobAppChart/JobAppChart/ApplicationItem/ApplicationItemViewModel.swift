@@ -25,6 +25,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
     // MARK: Calculated values for the view.
     @Published var daysSinceUpdate: Int = 0
     @Published var statusColor: Color = Color(#colorLiteral(red: 0.8320404887, green: 0.9654800296, blue: 0.9295234084, alpha: 1))
+    @Published var isStatusColorLight: Bool = true
     
     var subscriptions = Set<AnyCancellable>()
     
@@ -39,6 +40,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
         self.updateDaysSinceStatusUpdate()
 
         addDailyUpdateSubscription()
+        addStatusUpdateSubscription()
     }
     
     /// Adds an observer to the system calendar to update the `daysSinceUpdate` field if the calendar day changes.
@@ -48,6 +50,16 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
             guard let self else {return}
             self.updateDaysSinceStatusUpdate()
         }
+    }
+    
+    /// Adds a subscription to the item's status to update `statusColor` when `status` changes.
+    func addStatusUpdateSubscription() {
+        self.$status
+            .sink { [weak self] newStatus in
+                guard let self = self else {return}
+                self.statusColor = StatusList.shared.getStatusColor(newStatus)
+            }
+            .store(in: &subscriptions)
     }
     
     /// Resets all fields from the Model, as well as computed fields.
