@@ -78,7 +78,7 @@ struct ApplicationEditorView: View {
             HStack {
                 Text("Application Status:")
                 Picker("Application Status", selection: $vm.status) {
-                    ForEach(vm.statuses, id: \.self) { status in
+                    ForEach(vm.statusOptions, id: \.self) { status in
                         Text(status).tag(status)
                     }
                 }

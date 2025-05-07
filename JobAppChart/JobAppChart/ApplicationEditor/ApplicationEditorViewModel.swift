@@ -26,7 +26,7 @@ class ApplicationEditorViewModel: ObservableObject {
     /// Whether `toEdit` is a new application being created (not in the database yet), or a previously existing application being edited.
     @Published var newApplication: Bool
     @Published var title: String = "Add a new application"
-    @Published var statuses: [String] = []
+    @Published var statusOptions: [String] = []
     
     init(toEdit: ApplicationItem, isNew: Bool = false) {
         self.toEdit = toEdit
@@ -37,7 +37,7 @@ class ApplicationEditorViewModel: ObservableObject {
         self.status = toEdit.status
         self.notes = toEdit.notes
         self.newApplication = isNew
-        getStatusOptions()
+        self.statusOptions = StatusList.shared.getOrderedStatuses()
         addTitleSubscriber()
     }
     
@@ -59,11 +59,6 @@ class ApplicationEditorViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
     
-    func getStatusOptions () {
-        for status in StatusList.shared.statusToColorMap.keys {
-            statuses.append(status)
-        }
-    }
     
     /// Saves the currently written values to the Application Item's model and updates the Item List.
     func saveEntry() -> ApplicationItem {
