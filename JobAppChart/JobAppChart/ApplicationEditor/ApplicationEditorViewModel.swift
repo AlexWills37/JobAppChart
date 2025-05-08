@@ -28,6 +28,8 @@ class ApplicationEditorViewModel: ObservableObject {
     @Published var title: String = "Add a new application"
     // List of status options for the user to choose.
     @Published var statusOptions: [String] = []
+    @Published var notificationEnbaled: Bool = false
+    @Published var notificationsNotAuthorized: Bool = false
     
     init(toEdit: ApplicationItem, isNew: Bool = false) {
         self.toEdit = toEdit
@@ -39,6 +41,7 @@ class ApplicationEditorViewModel: ObservableObject {
         self.notes = toEdit.notes
         self.newApplication = isNew
         self.statusOptions = StatusList.shared.getOrderedStatuses()
+        updateNotificationStatus()
         addTitleSubscriber()
     }
     
@@ -60,6 +63,11 @@ class ApplicationEditorViewModel: ObservableObject {
             .store(in: &subscriptions)
     }
     
+    func updateNotificationStatus() {
+        Task { @MainActor in
+            notificationEnbaled = await NotificationService.shared.isNotificationPending(toEdit.id.uuidString)
+        }
+    }
     
     /// Saves the currently written values to the Application Item's model and updates the Item List.
     func saveEntry() -> ApplicationItem {
@@ -73,6 +81,20 @@ class ApplicationEditorViewModel: ObservableObject {
         
         ApplicationItemListViewModel.shared.updateItemFromModel(toUpdate: toEdit)
         try? LocalStorageService.shared.saveEntry(toSave: toEdit)
+        
+        // Schedule notification if enabled
+        if notificationEnbaled {
+            let notificationDate = Calendar.current.date(byAdding: .day, value: 14, to: self.dateApplied)!
+            var notificationDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: notificationDate)
+            notificationDateComponents.hour = 12
+            notificationDateComponents.minute = 0
+            notificationDateComponents.second = 0
+            Task { @MainActor in
+                await NotificationService.shared.scheduleNotification(title: "Follow up on your application!", body: "It's been 14 days since you applied to \(self.companyName). Have you received any updates?", date: notificationDateComponents, id: toEdit.id.uuidString)
+            }
+        } else {
+            NotificationService.shared.cancelNotification(toEdit.id.uuidString)
+        }
 
         return toEdit
     }
@@ -81,5 +103,21 @@ class ApplicationEditorViewModel: ObservableObject {
     func deleteEntry() {
         try? LocalStorageService.shared.deleteEntry(toDelete: toEdit)
         ApplicationItemListViewModel.shared.deleteItem(toDelete: toEdit)
+    }
+    
+    func toggleNotification() {
+        if (!notificationEnbaled) {
+            Task { @MainActor in
+                let authorized = await NotificationService.shared.requestPermissions()
+                if authorized {
+                   notificationEnbaled = true
+                } else {
+                    notificationsNotAuthorized = true
+                }
+            }
+
+        } else {
+            notificationEnbaled = false
+        }
     }
 }

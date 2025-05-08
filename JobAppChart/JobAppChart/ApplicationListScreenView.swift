@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ApplicationListScreenView: View {
     @State var show = true
@@ -14,6 +15,29 @@ struct ApplicationListScreenView: View {
             ZStack {
                 Color(#colorLiteral(red: 0.9321114421, green: 1, blue: 0.9600206017, alpha: 1)).ignoresSafeArea()
                 VStack{
+                    Button("Requresst Permss") {
+                        UNUserNotificationCenter.current()
+                            .requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+                                if (success) {
+                                    print("Access granted")
+                                }
+                                else if let error {
+                                    print(error.localizedDescription)
+                                }
+                                
+                            }
+                    }
+                    Button("Schedule notif") {
+                        let content = UNMutableNotificationContent()
+                        content.title = "NOTIFICATRION"
+                        content.subtitle = "whassup"
+                        content.sound = .default
+                        
+                        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                        
+                        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                        UNUserNotificationCenter.current().add(request)
+                    }
                     
                     Text("Applications")
                         .font(.title)
