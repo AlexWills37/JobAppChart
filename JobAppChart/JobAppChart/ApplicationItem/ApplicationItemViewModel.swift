@@ -20,7 +20,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
     @Published var positionTitle: String
     @Published var websiteLink: String
     @Published var status: String
-    @Published var dateApplied: Date?
+    @Published var dateApplied: Date
     
     // MARK: Calculated values for the view.
     @Published var daysSinceUpdate: Int = 0
@@ -77,7 +77,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
     
     /// Calculates the days since the `dateApplied` value, storing it in `daysSinceUpdate`.
     func updateDaysSinceStatusUpdate() {
-        guard let dateApplied = dateApplied else {return}
+//        guard let dateApplied = dateApplied else {return}
         self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
     }
     

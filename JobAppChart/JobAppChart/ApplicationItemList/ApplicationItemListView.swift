@@ -22,15 +22,21 @@ struct ApplicationItemListView: View {
                     Spacer()
                         .frame(height: gradientSpacerSize)
                     // View Model contains a list of ApplicationItem View Models to display with ApplicationItem views
-                    LazyVStack(spacing: 0){
-                        ForEach(vm.itemsToShow) { itemViewModel in
-                            NavigationLink(value: itemViewModel) {
-                                ApplicationItemView(vm: itemViewModel)
+                    LazyVStack(spacing: 10){
+                        
+                        ForEach(vm.groupedItemsToShow, id: \.self) { group in
+                            
+                            LazyVStack(spacing: 0) {
+                                ForEach(group) { itemViewModel in
+                                    NavigationLink(value: itemViewModel) {
+                                        ApplicationItemView(vm: itemViewModel)
+                                    }
+                                }
                             }
+                            .border(.black, width:2)
+                            .cornerRadius(3)
                         }
                     }
-                    .border(.black, width:3)
-                    .cornerRadius(3)
                     Spacer()
                         .frame(height: gradientSpacerSize)
 
