@@ -2,7 +2,7 @@
 
 **JobAppChart** (*name subject to change*) is an iOS tool to help users organize and stay up-to-date with their job applications.
 
-> *Disclosure: this app does not automatically track the status of your applications (yet).*
+> *Disclaimer: this app does not automatically track the status of your applications (yet).*
 
 ### Organize your applications
 
