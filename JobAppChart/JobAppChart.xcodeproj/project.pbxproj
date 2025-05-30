@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FA6EB9C42DC3E6B7007A2972 /* Exceptions for "JobAppChart" folder in "JobAppChart" target */ = {
+		FA6EB9C42DC3E6B7007A2972 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,24 +40,9 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FA3E0A4A2DBFED6100EFE4B0 /* JobAppChart */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				FA6EB9C42DC3E6B7007A2972 /* Exceptions for "JobAppChart" folder in "JobAppChart" target */,
-			);
-			path = JobAppChart;
-			sourceTree = "<group>";
-		};
-		FA3E0A5A2DBFED6200EFE4B0 /* JobAppChartTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = JobAppChartTests;
-			sourceTree = "<group>";
-		};
-		FA3E0A642DBFED6200EFE4B0 /* JobAppChartUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = JobAppChartUITests;
-			sourceTree = "<group>";
-		};
+		FA3E0A4A2DBFED6100EFE4B0 /* JobAppChart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (FA6EB9C42DC3E6B7007A2972 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = JobAppChart; sourceTree = "<group>"; };
+		FA3E0A5A2DBFED6200EFE4B0 /* JobAppChartTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = JobAppChartTests; sourceTree = "<group>"; };
+		FA3E0A642DBFED6200EFE4B0 /* JobAppChartUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = JobAppChartUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +185,7 @@
 				};
 			};
 			buildConfigurationList = FA3E0A432DBFED6100EFE4B0 /* Build configuration list for PBXProject "JobAppChart" */;
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -208,7 +194,6 @@
 			);
 			mainGroup = FA3E0A3F2DBFED6100EFE4B0;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = FA3E0A492DBFED6100EFE4B0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
