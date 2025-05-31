@@ -12,6 +12,7 @@ struct ApplicationEditorView: View {
     
     @StateObject var vm = ApplicationEditorViewModel()
     @State var showingDeleteConfirmation = false
+    @State var showingNotificationAlert = false
     
     /// Range of selectable "applied" dates, from the year 2000 to today.
     var range: ClosedRange<Date> = {
@@ -44,9 +45,29 @@ struct ApplicationEditorView: View {
                     .font(.headline)
                     .lineLimit(2)
         
-                Button("Save") {
-                    vm.saveEntry()
-                    dismiss()
+                HStack(spacing: 30){
+                    Button {
+                        vm.notificationEnbaled ? vm.toggleNotification() : showingNotificationAlert.toggle()
+                    } label: {
+                        Image(systemName: vm.notificationEnbaled ? "bell.circle" : "bell.slash.circle")
+                            .foregroundStyle(.blue)
+                            .font(.title2)
+                    }
+                    .alert("Follow up?", isPresented: $showingNotificationAlert) {
+                        Button("Cancel", role: .cancel) {}
+                        Button("Enable") {
+                            vm.toggleNotification()
+                        }
+                    } message: {
+                        Text("Would you like to receive a reminder to follow up on this application 14 days after the Applied On date?")
+                    }
+                    .alert("Error", isPresented: $vm.notificationsNotAuthorized) {} message: {
+                        Text("Notifications are not enabled. To receive notifications, please change your settings.")
+                    }
+                    Button("Save") {
+                        vm.saveEntry()
+                        dismiss()
+                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
                 

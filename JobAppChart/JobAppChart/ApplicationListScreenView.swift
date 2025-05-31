@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct ApplicationListScreenView: View {
     @State var show = true
@@ -14,7 +15,6 @@ struct ApplicationListScreenView: View {
             ZStack {
                 Color(#colorLiteral(red: 0.9321114421, green: 1, blue: 0.9600206017, alpha: 1)).ignoresSafeArea()
                 VStack{
-                    
                     Text("Applications")
                         .font(.title)
                     

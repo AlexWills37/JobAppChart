@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FA6EB9C42DC3E6B7007A2972 /* Exceptions for "JobAppChart" folder in "JobAppChart" target */ = {
+		FA6EB9C42DC3E6B7007A2972 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,24 +40,9 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FA3E0A4A2DBFED6100EFE4B0 /* JobAppChart */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				FA6EB9C42DC3E6B7007A2972 /* Exceptions for "JobAppChart" folder in "JobAppChart" target */,
-			);
-			path = JobAppChart;
-			sourceTree = "<group>";
-		};
-		FA3E0A5A2DBFED6200EFE4B0 /* JobAppChartTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = JobAppChartTests;
-			sourceTree = "<group>";
-		};
-		FA3E0A642DBFED6200EFE4B0 /* JobAppChartUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = JobAppChartUITests;
-			sourceTree = "<group>";
-		};
+		FA3E0A4A2DBFED6100EFE4B0 /* JobAppChart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (FA6EB9C42DC3E6B7007A2972 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = JobAppChart; sourceTree = "<group>"; };
+		FA3E0A5A2DBFED6200EFE4B0 /* JobAppChartTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = JobAppChartTests; sourceTree = "<group>"; };
+		FA3E0A642DBFED6200EFE4B0 /* JobAppChartUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = JobAppChartUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +185,7 @@
 				};
 			};
 			buildConfigurationList = FA3E0A432DBFED6100EFE4B0 /* Build configuration list for PBXProject "JobAppChart" */;
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -208,7 +194,6 @@
 			);
 			mainGroup = FA3E0A3F2DBFED6100EFE4B0;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			productRefGroup = FA3E0A492DBFED6100EFE4B0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -315,6 +300,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development: thesuperscientist@icloud.com (V5VMUKRLKA)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 637S7R8M5S;
@@ -380,6 +366,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development: thesuperscientist@icloud.com (V5VMUKRLKA)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 637S7R8M5S;
@@ -410,6 +397,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JobAppChart/JobAppChartDebug.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637S7R8M5S;
@@ -428,6 +417,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alexwills.JobAppChart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -440,6 +430,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = JobAppChart/JobAppChart.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637S7R8M5S;
@@ -458,6 +450,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alexwills.JobAppChart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
