@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		FA6EB9C42DC3E6B7007A2972 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		FA6EB9C42DC3E6B7007A2972 /* Exceptions for "JobAppChart" folder in "JobAppChart" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -40,32 +40,41 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FA3E0A4A2DBFED6100EFE4B0 /* JobAppChart */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (FA6EB9C42DC3E6B7007A2972 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = JobAppChart; sourceTree = "<group>"; };
-		FA3E0A5A2DBFED6200EFE4B0 /* JobAppChartTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = JobAppChartTests; sourceTree = "<group>"; };
-		FA3E0A642DBFED6200EFE4B0 /* JobAppChartUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = JobAppChartUITests; sourceTree = "<group>"; };
+		FA3E0A4A2DBFED6100EFE4B0 /* JobAppChart */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FA6EB9C42DC3E6B7007A2972 /* Exceptions for "JobAppChart" folder in "JobAppChart" target */,
+			);
+			path = JobAppChart;
+			sourceTree = "<group>";
+		};
+		FA3E0A5A2DBFED6200EFE4B0 /* JobAppChartTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JobAppChartTests;
+			sourceTree = "<group>";
+		};
+		FA3E0A642DBFED6200EFE4B0 /* JobAppChartUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = JobAppChartUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		FA3E0A452DBFED6100EFE4B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA3E0A542DBFED6200EFE4B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA3E0A5E2DBFED6200EFE4B0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -103,14 +112,10 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
 				FA3E0A4A2DBFED6100EFE4B0 /* JobAppChart */,
 			);
 			name = JobAppChart;
-			packageProductDependencies = (
-			);
 			productName = JobAppChart;
 			productReference = FA3E0A482DBFED6100EFE4B0 /* JobAppChart.app */;
 			productType = "com.apple.product-type.application";
@@ -132,8 +137,6 @@
 				FA3E0A5A2DBFED6200EFE4B0 /* JobAppChartTests */,
 			);
 			name = JobAppChartTests;
-			packageProductDependencies = (
-			);
 			productName = JobAppChartTests;
 			productReference = FA3E0A572DBFED6200EFE4B0 /* JobAppChartTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -155,8 +158,6 @@
 				FA3E0A642DBFED6200EFE4B0 /* JobAppChartUITests */,
 			);
 			name = JobAppChartUITests;
-			packageProductDependencies = (
-			);
 			productName = JobAppChartUITests;
 			productReference = FA3E0A612DBFED6200EFE4B0 /* JobAppChartUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -185,7 +186,6 @@
 				};
 			};
 			buildConfigurationList = FA3E0A432DBFED6100EFE4B0 /* Build configuration list for PBXProject "JobAppChart" */;
-			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -194,6 +194,7 @@
 			);
 			mainGroup = FA3E0A3F2DBFED6100EFE4B0;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 90;
 			productRefGroup = FA3E0A492DBFED6100EFE4B0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -208,48 +209,36 @@
 /* Begin PBXResourcesBuildPhase section */
 		FA3E0A462DBFED6100EFE4B0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA3E0A552DBFED6200EFE4B0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA3E0A5F2DBFED6200EFE4B0 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FA3E0A442DBFED6100EFE4B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA3E0A532DBFED6200EFE4B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		FA3E0A5D2DBFED6200EFE4B0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
@@ -267,7 +256,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		FA3E0A692DBFED6200EFE4B0 /* Debug */ = {
+		FA3E0A692DBFED6200EFE4B0 /* Debug configuration for PBXProject "JobAppChart" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -333,7 +322,7 @@
 			};
 			name = Debug;
 		};
-		FA3E0A6A2DBFED6200EFE4B0 /* Release */ = {
+		FA3E0A6A2DBFED6200EFE4B0 /* Release configuration for PBXProject "JobAppChart" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -392,7 +381,7 @@
 			};
 			name = Release;
 		};
-		FA3E0A6C2DBFED6200EFE4B0 /* Debug */ = {
+		FA3E0A6C2DBFED6200EFE4B0 /* Debug configuration for PBXNativeTarget "JobAppChart" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -425,7 +414,7 @@
 			};
 			name = Debug;
 		};
-		FA3E0A6D2DBFED6200EFE4B0 /* Release */ = {
+		FA3E0A6D2DBFED6200EFE4B0 /* Release configuration for PBXNativeTarget "JobAppChart" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -458,7 +447,7 @@
 			};
 			name = Release;
 		};
-		FA3E0A6F2DBFED6200EFE4B0 /* Debug */ = {
+		FA3E0A6F2DBFED6200EFE4B0 /* Debug configuration for PBXNativeTarget "JobAppChartTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -466,6 +455,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637S7R8M5S;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JobAppChart/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alexwills.JobAppChartTests;
@@ -477,7 +467,7 @@
 			};
 			name = Debug;
 		};
-		FA3E0A702DBFED6200EFE4B0 /* Release */ = {
+		FA3E0A702DBFED6200EFE4B0 /* Release configuration for PBXNativeTarget "JobAppChartTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -485,6 +475,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637S7R8M5S;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JobAppChart/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alexwills.JobAppChartTests;
@@ -496,13 +487,14 @@
 			};
 			name = Release;
 		};
-		FA3E0A722DBFED6200EFE4B0 /* Debug */ = {
+		FA3E0A722DBFED6200EFE4B0 /* Debug configuration for PBXNativeTarget "JobAppChartUITests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637S7R8M5S;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JobAppChart/Info.plist;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alexwills.JobAppChartUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -513,13 +505,14 @@
 			};
 			name = Debug;
 		};
-		FA3E0A732DBFED6200EFE4B0 /* Release */ = {
+		FA3E0A732DBFED6200EFE4B0 /* Release configuration for PBXNativeTarget "JobAppChartUITests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 637S7R8M5S;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = JobAppChart/Info.plist;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = alexwills.JobAppChartUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -536,37 +529,33 @@
 		FA3E0A432DBFED6100EFE4B0 /* Build configuration list for PBXProject "JobAppChart" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FA3E0A692DBFED6200EFE4B0 /* Debug */,
-				FA3E0A6A2DBFED6200EFE4B0 /* Release */,
+				FA3E0A692DBFED6200EFE4B0 /* Debug configuration for PBXProject "JobAppChart" */,
+				FA3E0A6A2DBFED6200EFE4B0 /* Release configuration for PBXProject "JobAppChart" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		FA3E0A6B2DBFED6200EFE4B0 /* Build configuration list for PBXNativeTarget "JobAppChart" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FA3E0A6C2DBFED6200EFE4B0 /* Debug */,
-				FA3E0A6D2DBFED6200EFE4B0 /* Release */,
+				FA3E0A6C2DBFED6200EFE4B0 /* Debug configuration for PBXNativeTarget "JobAppChart" */,
+				FA3E0A6D2DBFED6200EFE4B0 /* Release configuration for PBXNativeTarget "JobAppChart" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		FA3E0A6E2DBFED6200EFE4B0 /* Build configuration list for PBXNativeTarget "JobAppChartTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FA3E0A6F2DBFED6200EFE4B0 /* Debug */,
-				FA3E0A702DBFED6200EFE4B0 /* Release */,
+				FA3E0A6F2DBFED6200EFE4B0 /* Debug configuration for PBXNativeTarget "JobAppChartTests" */,
+				FA3E0A702DBFED6200EFE4B0 /* Release configuration for PBXNativeTarget "JobAppChartTests" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		FA3E0A712DBFED6200EFE4B0 /* Build configuration list for PBXNativeTarget "JobAppChartUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FA3E0A722DBFED6200EFE4B0 /* Debug */,
-				FA3E0A732DBFED6200EFE4B0 /* Release */,
+				FA3E0A722DBFED6200EFE4B0 /* Debug configuration for PBXNativeTarget "JobAppChartUITests" */,
+				FA3E0A732DBFED6200EFE4B0 /* Release configuration for PBXNativeTarget "JobAppChartUITests" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
