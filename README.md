@@ -87,7 +87,7 @@ GRDB was used to store user-added information between sessions, accessed in the 
 
 This project initially had a 2-week deadline. I used GitHub Projects, Issues, and Milestones to stay organized during development.
 
-#### Ideadtion
+#### Ideation
 
 This project, a tool to help organize job applications, is something that has been on my mind for a while. Up until now, I've been using a spreadsheet to track my job applications. I added functionality to the spreadsheet via a dropdown seelction for application statuses, a calculated *Days since application* field, and color coding based on the status, but there were always a few extra features that I wanted:
 
