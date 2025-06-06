@@ -5,104 +5,82 @@
 //  Created by Alex on 4/30/25.
 //
 import Combine
+import Foundation
 
 /// View Model that manages a list of ApplicationItems to dsiplay.
 class ApplicationItemListViewModel: ObservableObject {
-    static let shared = ApplicationItemListViewModel()
     
-    
+    /// List of View Model lists to build the view. Each list of View Models is a "group," intended to display together, separated from other groups.
     @Published var groupedItemsToShow: [[ApplicationItemViewModel]] = []
     
-    var loadedItemModels: [ApplicationItem] = []
-    var itemModelsToViewModels: [ApplicationItem: ApplicationItemViewModel] = [:]
+    /// Primary storage for the currently loaded View Models based on their application ID.
+    var itemIdsToViewModels: [String: ApplicationItemViewModel] = [:]
     
     var subscriptions = Set<AnyCancellable>()
     
-    private init() {
-        loadedItemModels = LocalStorageService.shared.getAllData()
-        for model in loadedItemModels {
-            let viewModel = ApplicationItemViewModel(itemModel: model)
-            itemModelsToViewModels[model] = viewModel
-        }
-        refreshList()
-        sortByDateApplied()
+    init() {
+        
+        // Retrieve all applications from the database.
+        let loadedItemModels = LocalDatabase.shared.getAllApplicationsSorted()
+        print("Loaded \(loadedItemModels.count) items")
+        
+        // Create the ordered list for all the application records in the database.
+        rebuildGroupedList()
+        
+        // Subscription to update objects when the applications table is altered.
+        LocalDatabase.shared.getApplicationObservationPublisher()
+            .sink { completion in } receiveValue: { [weak self] applications in
+                guard let self = self else {return}
+                self.rebuildGroupedList()
+            }
+            .store(in: &subscriptions)
+
     }
     
     // MARK: - Maintaining the state of the list
     
-    /// Refreshes the data of a particular Application Item View Model according to the Application Item Model.
-    ///
-    /// - Parameter toUpdate: The ApplicationItem (model) of the ViewModel to update.
-    func updateItemFromModel(toUpdate: ApplicationItem) {
-        
-        if !loadedItemModels.contains(where: { other in
-            return other == toUpdate
-        }) {
-            loadedItemModels.append(toUpdate)
-            let viewModel = ApplicationItemViewModel(itemModel: toUpdate)
-            itemModelsToViewModels[toUpdate] = viewModel
-        }
-        
-        itemModelsToViewModels[toUpdate]?.refreshDataFromModel()
-        refreshList()
-        sortByDateApplied()
-    }
-    
-    /// Refreshes every View Model according to their Item Models.
-    func refreshViewModels() {
-        for vm in itemModelsToViewModels.values {
-            vm.refreshDataFromModel()
-        }
-    }
-    
-    /// Removes an ApplicationItem and its corresponding ViewModel from the list.
-    func deleteItem(toDelete: ApplicationItem) {
-        itemModelsToViewModels.removeValue(forKey: toDelete)
-        loadedItemModels.removeAll { model in
-            model == toDelete
-        }
-        refreshList()
-    }
-    
-    /// Iterates through all loaded View Models and sorts/organizes them into the published list to display.
-    func refreshList() {
+    /// Iterates through all Applications in the database and sorts/organizes them into the published list of VMs to display.
+    func rebuildGroupedList() {
         self.groupedItemsToShow = []
-        let knownStatuses = StatusList.shared.getOrderedStatuses(.displayGroup)
-        let sortedViewModels = self.itemModelsToViewModels.values.sorted { lhs, rhs in
-            lhs.dateApplied > rhs.dateApplied
-        }
-        for status in knownStatuses {
-            var group: [ApplicationItemViewModel] = []
+        
+        let sortedApplicationInfos = LocalDatabase.shared.getAllApplicationsSorted()
+        
+        // Track the item IDs that are still in the database, so we can remove any items that are no longer present.
+        var persistingItemIds: Set<String> = []
+        
+        // Group and update all applications.
+        var group: [ApplicationItemViewModel] = []
+        var current: ApplicationInfo
+        for i in 0..<sortedApplicationInfos.count {
+            // Add the current application's VM to the current group.
+            current = sortedApplicationInfos[i]
+            var vm = self.itemIdsToViewModels[current.application.id]
             
-            for vm in sortedViewModels {
-                if (vm.status == status) {
-                    group.append(vm)
-                }
+            // Create a new VM, or reassign the new model to an existing VM.
+            if (vm === nil) {
+                vm = ApplicationItemViewModel(itemModel: current)
+                self.itemIdsToViewModels[current.application.id] = vm
+            } else {
+                vm?.refreshModel(current.application)
             }
+            group.append(vm!)
             
-            if group.count > 0 {
+            // Add the group to the list and start a new one if we are at the end of the current group.
+            if (i + 1 >= sortedApplicationInfos.count || sortedApplicationInfos[i + 1].status.id != current.status.id) {
                 self.groupedItemsToShow.append(group)
+                group = []
             }
+            
+            // Add this item's ID to a set to prevent its removal.
+            persistingItemIds.insert(current.application.id)
         }
         
-        var otherGroup: [ApplicationItemViewModel] = []
-        for vm in sortedViewModels {
-            if !knownStatuses.contains([vm.status]) {
-                otherGroup.append(vm)
+        // Remove any VMs that were not provided by the database.
+        for itemId in self.itemIdsToViewModels.keys {
+            if (!persistingItemIds.contains(itemId)) {
+                self.itemIdsToViewModels.removeValue(forKey: itemId)
             }
-        }
-        if otherGroup.count > 0 {
-            self.groupedItemsToShow.append(otherGroup)
         }
     }
     
-    // MARK: - Filtering and sorting
-    func sortByDateApplied(ascending: Bool = false) {
-        loadedItemModels.sort { lhs, rhs in
-            if ascending {
-                return lhs.dateApplied < rhs.dateApplied
-            }
-            return lhs.dateApplied > rhs.dateApplied
-        }
-    }
 }

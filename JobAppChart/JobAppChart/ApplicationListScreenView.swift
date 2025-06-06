@@ -24,8 +24,9 @@ struct ApplicationListScreenView: View {
                             ApplicationEditorView(vm: ApplicationEditorViewModel(toEdit: itemVM.model))
                         }
                 }
-                NavigationLink(value: ApplicationItem()){
-                    
+                NavigationLink {
+                    ApplicationEditorView()
+                } label: {
                     HStack{
                         Image(systemName: "plus")
                         Text("Add Entry")
@@ -39,13 +40,7 @@ struct ApplicationListScreenView: View {
                     )
                     .padding()
                 }
-                .navigationDestination(for: ApplicationItem.self) { itemModel in
-                    return ApplicationEditorView()
-                    
-                }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                
-                
                 
             }
 

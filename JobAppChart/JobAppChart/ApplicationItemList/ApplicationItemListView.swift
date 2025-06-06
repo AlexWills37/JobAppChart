@@ -11,8 +11,7 @@ import SwiftData
 struct ApplicationItemListView: View {
     let gradientSpacerSize = 70.0
     
-    @StateObject var vm = ApplicationItemListViewModel.shared
-    
+    @StateObject var vm = ApplicationItemListViewModel()
     var body: some View {
         ZStack {
             VStack {

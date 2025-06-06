@@ -23,7 +23,7 @@ struct ApplicationItemView: View {
             VStack(alignment: .trailing) {
                 Text("\(vm.daysSinceUpdate) days ago")
                     .font(.caption)
-                Text("\(vm.status)")
+                Text("\(vm.statusName)")
             }
 
             
@@ -39,5 +39,5 @@ struct ApplicationItemView: View {
 }
 
 #Preview {
-    ApplicationItemView(vm: ApplicationItemViewModel(itemModel: ApplicationItem() ))
+//    ApplicationItemView(vm: ApplicationItemViewModel(itemModel: ApplicationItem() ))
 }

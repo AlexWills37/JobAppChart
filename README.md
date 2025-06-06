@@ -55,7 +55,7 @@ Because this is my first real Swift project, I'd like to reflect on the process 
 ### Technology
 
 This project was developed with Swift and SwiftUI, using Xcode 16.
-It also makes use of the SwiftData and Combine frameworks.
+It also makes use of the GRDB and Combine frameworks.
 
 ### System architecture
 
@@ -63,7 +63,7 @@ This project follows the MVVM pattern, separating concerns between the Views (UI
 
 Combine was used to assist data-binding and reactivity, connecting the Views, ViewModels, and Models through subscriptions only to necessary fields.
 
-SwiftData was used to store user-added information between sessions, accessed in the model layer when necessary.
+GRDB was used to store user-added information between sessions, accessed in the model layer when necessary.
 
 #### Successes
 
@@ -71,25 +71,23 @@ SwiftData was used to store user-added information between sessions, accessed in
 
 - With Combine, binding data between the Views and ViewModels and reacting to changing values was incredibly straightforward.
    
-- SwiftData handles saving, avoiding duplicates, and data integrity with ease.
-
 #### Challenges
 
-- SwiftData is designed to integrate closely with the Views of an app, making the MVVM pattern less effective.
-  > Models in SwiftData conform to the `Observable` protocol, so that any changes to a Model object will invalidate the Views that use it, keeping it up-to-date.
+- Initially, this project used SwiftData for local storage.
+  > SwiftData is designed to work closely with the Views of an app, making the MVVM pattern less effective.
   >
-  > Combine utilizes the `ObservableObject` protocol and the `@Published` attribute to create Publishers to subscribe to.
-  >
-  > These two systems are not entirely compatible with each other (at least in my preliminary research), and the `Observable` protocol used by SwiftData seems to primarily apply to SwiftUI Views. 
-  > To ensure that the ViewModels, which are not SwiftUI Views, stay up-to-date with the SwiftData Models, some improvisation was needed.
-  >
-  > The ApplicationList ViewModel is a singleton, and whenever the Models are edited, such as by the ApplicationEditor, the Models are updated, and the singleton List ViewModel is instructed to update the the Model's corresponding ViewModel.
+  > In particular, it is difficult to listen to changes in SwiftData in non-SwiftUI components.
 
+- GRDB, like SwiftData, uses an underlying SQLite database, but allows for more control and easier observation.
+  > With GRDB's `ValueObservation`, any module of the project is able to listen and respond to changes in the database.
+  >
+  > Additionally, these observations can be used as Combine publishers, which I am already familiar with.
+ 
 ### Workflow
 
 This project initially had a 2-week deadline. I used GitHub Projects, Issues, and Milestones to stay organized during development.
 
-#### Ideadtion
+#### Ideation
 
 This project, a tool to help organize job applications, is something that has been on my mind for a while. Up until now, I've been using a spreadsheet to track my job applications. I added functionality to the spreadsheet via a dropdown seelction for application statuses, a calculated *Days since application* field, and color coding based on the status, but there were always a few extra features that I wanted:
 
