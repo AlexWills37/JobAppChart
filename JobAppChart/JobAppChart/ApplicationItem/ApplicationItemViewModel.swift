@@ -11,15 +11,21 @@ import Combine
 
 /// View Model exposing an ApplicationItem's base values and calculated properties.
 class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
-    var model: ApplicationItem
     
-    var id: UUID
+    /// The main source of information for this ApplicationItem.
+    var model: Application
+    
+    /// The source of information for this ApplicationItem's Status.
+    @Published private var statusModel: Status
+
+    /// The id shared by this View Model and the underlying Application model.
+    var id: String
     
     // MARK: Directly exposed model values.
     @Published var companyName: String
     @Published var positionTitle: String
     @Published var websiteLink: String
-    @Published var status: String
+    @Published var statusName: String
     @Published var dateApplied: Date
     
     // MARK: Calculated values for the view.
@@ -29,55 +35,62 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
     
     var subscriptions = Set<AnyCancellable>()
     
-    init(itemModel: ApplicationItem) {
-        self.id = itemModel.id
-        self.model = itemModel
-        self.companyName = itemModel.companyName
-        self.positionTitle = itemModel.positionTitle
-        self.status = itemModel.status
-        self.dateApplied = itemModel.dateApplied
-        self.websiteLink = itemModel.websiteLink
-        self.updateDaysSinceStatusUpdate()
+    init(itemModel: ApplicationInfo) {
+        self.id = itemModel.application.id
+        self.model = itemModel.application
+        self.companyName = itemModel.application.companyName
+        self.positionTitle = itemModel.application.positionTitle
+        self.statusName = itemModel.status.statusName
+        self.statusModel = itemModel.status
+        self.dateApplied = itemModel.application.dateApplied
+        self.websiteLink = itemModel.application.websiteLink ?? ""
 
-        addDailyUpdateSubscription()
+        addDaysSinceSubscriptions()
         addStatusUpdateSubscription()
     }
     
-    /// Adds an observer to the system calendar to update the `daysSinceUpdate` field if the calendar day changes.
-    func addDailyUpdateSubscription() {
+    /// Adds observers to update the computed `daysSinceUpdate` field if the calendar day changes, and if the `dateApplied` changes.
+    func addDaysSinceSubscriptions() {
         // Refresh the daysSinceUpdate count when the calendar changes
         NotificationCenter.default.addObserver(forName: .NSCalendarDayChanged, object: nil, queue: .main) { [weak self] _ in
             guard let self else {return}
             self.updateDaysSinceStatusUpdate()
         }
+        
+        self.$dateApplied.sink { [weak self] newDate in
+            guard let self = self else {return}
+            self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: newDate, to: Date.now).day!
+        }.store(in: &subscriptions)
     }
     
-    /// Adds a subscription to the item's status to update `statusColor` when `status` changes.
+    /// Adds a subscription to the item's status to update `statusColor` and `statusName` when `status` changes.
     func addStatusUpdateSubscription() {
-        self.$status
+        self.$statusModel
             .sink { [weak self] newStatus in
                 guard let self = self else {return}
-                self.statusColor = StatusList.shared.getStatusColor(newStatus)
+                self.statusName = newStatus.statusName
+                self.statusColor = ColorTool.makeColor(newStatus.color)
             }
             .store(in: &subscriptions)
     }
     
-    /// Resets all fields from the Model, as well as computed fields.
+    /// Refreshes the View Model with a more updated Model.
     ///
-    /// Due to the ViewModel not being a `View`, these fields are not always synchronized.
-    /// Due to the Model being `Observable` and not an `ObservableObject`, the model's fields do not have publishers.
-    func refreshDataFromModel() {
-        self.companyName = model.companyName
-        self.positionTitle = model.positionTitle
-        self.status = model.status
-        self.dateApplied = model.dateApplied
-        self.websiteLink = model.websiteLink
-        self.updateDaysSinceStatusUpdate()
+    /// - Parameter application: The new Application model to declare this item's state.
+    func refreshModel(_ application: Application) {
+        if (self.model.id != application.id) {
+            print("WARNING: Attempting to set this ApplicationItemViewModel's model to an application with a different ID!")
+        }
+        self.model = application
+        self.companyName = application.companyName
+        self.positionTitle = application.positionTitle
+        self.statusModel = LocalDatabase.shared.getStatus(application.statusId) ?? self.statusModel
+        self.dateApplied = application.dateApplied
+        self.websiteLink = application.websiteLink ?? ""
     }
     
     /// Calculates the days since the `dateApplied` value, storing it in `daysSinceUpdate`.
     func updateDaysSinceStatusUpdate() {
-//        guard let dateApplied = dateApplied else {return}
         self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
     }
     

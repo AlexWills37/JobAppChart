@@ -7,6 +7,7 @@
 
 import Foundation
 import GRDB
+import Combine
 
 
 /// Access to a SQLite database through GRDB and a singleton connection that remains open as long as the app is.
@@ -26,10 +27,9 @@ class LocalDatabase {
             allApplications = try dbQueue.read { db in
                 return try Application
                     .including(required: Application.status.aliased(statusAlias))
-                    .order {[$0.dateApplied.desc,  statusAlias.displayPriority.desc] }
+                    .order {[  statusAlias.displayPriority.desc, $0.dateApplied.desc] }
                     .asRequest(of: ApplicationInfo.self)
                     .fetchAll(db)
-
             }
         } catch {
             print("Non-fatal error (returning empty list of ApplicationInfos): \(error)")
@@ -38,14 +38,16 @@ class LocalDatabase {
         return allApplications
     }
     
-    /// Retrieves all statues stored in the database.
+    /// Retrieves all statues stored in the database, ordered by their `pickerPriority`.
     ///
     /// - Returns: List of all application statuses in the database.
     func getAllStatuses() -> [Status] {
         var allStatuses: [Status] = []
         do {
             try dbQueue.read { db in
-                allStatuses = try Status.fetchAll(db)
+                allStatuses = try Status
+                    .order {$0.pickerPriority.desc}
+                    .fetchAll(db)
             }
         }
         catch {
@@ -63,6 +65,38 @@ class LocalDatabase {
         }
     }
     
+    /// Adds or updates an application in the database.
+    ///
+    /// - Parameter application: The new/existing application, whose values will be set to the database, using the `application.id` as its primary key.
+    func setApplication(_ application: Application) throws {
+        try dbQueue.write { db in
+            let request = Application.filter { $0.id == application.id }
+            let applicationIsNew = try request.isEmpty(db)
+            
+            if (applicationIsNew) {
+                try application.insert(db)
+            } else {
+                try application.update(db)
+            }
+        }
+    }
+    
+    /// Removes an application from the database.
+    ///
+    /// - Parameter application: The application to delete.
+    func deleteApplication(_ application: Application) throws {
+        try dbQueue.write { db in
+            try application.delete(db)
+        }
+    }
+    
+    /// Returns a Combine publisher for the database's list of Application objects.
+    ///
+    /// - Returns: Publisher that produces a list of Applications whenever the database is updated.
+    func getApplicationObservationPublisher() -> DatabasePublishers.Value<[Application]> {
+        let observation = ValueObservation.tracking(Application.fetchAll)
+        return observation.publisher(in: dbQueue)
+    }
     
     /// Adds default statuses to the database, if the Status table is empty.
     func checkAndAddDefaultStatuses() {
@@ -81,25 +115,7 @@ class LocalDatabase {
             print("ERROR when checking for Statuses/adding defaults in the database: \(error)")
         }
     }
-    
-    func insertApplication(_ application: Application) throws {
-        try dbQueue.write { db in
-            try application.insert(db)
-        }
-    }
-    
-    func updateApplication(_ application: Application) throws {
-        try dbQueue.write { db in
-            try application.update(db)
-        }
-    }
-    
-    func deleteApplication(_ application: Application) throws {
-        try dbQueue.write { db in
-            try application.delete(db)
-        }
-    }
-    
+
     /// Initializes the singleton database, opening a connection.
     private static func makeShared() -> LocalDatabase {
         do {
@@ -123,6 +139,7 @@ class LocalDatabase {
 
             // Setup the singleton object.
             let database = try LocalDatabase(dbQueue)
+            database.checkAndAddDefaultStatuses()
             return database
         }
         catch {

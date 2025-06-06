@@ -98,9 +98,9 @@ struct ApplicationEditorView: View {
             
             HStack {
                 Text("Application Status:")
-                Picker("Application Status", selection: $vm.status) {
-                    ForEach(vm.statusOptions, id: \.self) { status in
-                        Text(status).tag(status)
+                Picker("Application Status", selection: $vm.statusId) {
+                    ForEach(vm.statusOptions, id: \.self.id) { status in
+                        Text(status.name).tag(status.id)
                     }
                 }
                 .foregroundStyle(.black)
