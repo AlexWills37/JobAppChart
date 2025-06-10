@@ -19,15 +19,16 @@ class LocalDatabase {
     
     /// Retrieves all applications from the database with a default ordering, based on application status and dateApplied.
     ///
+    /// - Parameter sortQuery: SQL statement to insert in the ORDER BY clause. Defaults to sorting by `displayPriority DESC, dateApplied DESC`.
     /// - Returns: Ordered list of ApplicationInfo objects.
-    func getAllApplicationsSorted() -> [ApplicationInfo] {
+    func getAllApplicationsSorted(_ sortQuery: String = "status.displayPriority DESC, dateApplied DESC") -> [ApplicationInfo] {
         var allApplications: [ApplicationInfo] = []
         let statusAlias: TableAlias<Status> = TableAlias<Status>()
         do {
             allApplications = try dbQueue.read { db in
                 return try Application
                     .including(required: Application.status.aliased(statusAlias))
-                    .order {[  statusAlias.displayPriority.desc, $0.dateApplied.desc] }
+                    .order(sql: sortQuery)
                     .asRequest(of: ApplicationInfo.self)
                     .fetchAll(db)
             }

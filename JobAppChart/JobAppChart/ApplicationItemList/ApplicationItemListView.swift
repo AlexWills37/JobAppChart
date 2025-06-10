@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct ApplicationItemListView: View {
     let gradientSpacerSize = 70.0
@@ -15,6 +14,7 @@ struct ApplicationItemListView: View {
     var body: some View {
         ZStack {
             VStack {
+                SortBarView(vm: vm.sortBar)
                 ScrollView {
 
                     // Spacers surrounding the list help to stop the gradient mask from hiding the first and last elements.
