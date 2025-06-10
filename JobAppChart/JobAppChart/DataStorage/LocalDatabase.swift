@@ -17,16 +17,22 @@ class LocalDatabase {
     
     var dbQueue: DatabaseQueue
     
+    
     /// Retrieves all applications from the database with a default ordering, based on application status and dateApplied.
     ///
-    /// - Parameter sortQuery: SQL statement to insert in the ORDER BY clause. Defaults to sorting by `displayPriority DESC, dateApplied DESC`.
+    /// - Parameters
+    ///   - sortQuery: SQL statement to insert in the ORDER BY clause. Defaults to sorting by `displayPriority DESC, dateApplied DESC`.
+    ///   - filteredStatuses: List of Status IDs to include in the search. Leave blank to include all statuses.
     /// - Returns: Ordered list of ApplicationInfo objects.
-    func getAllApplicationsSorted(_ sortQuery: String = "status.displayPriority DESC, dateApplied DESC") -> [ApplicationInfo] {
+    func getAllApplicationsSorted(_ sortQuery: String = "status.displayPriority DESC, dateApplied DESC", filteredStatuses: [Int64] = []) -> [ApplicationInfo] {
         var allApplications: [ApplicationInfo] = []
         let statusAlias: TableAlias<Status> = TableAlias<Status>()
+        
         do {
             allApplications = try dbQueue.read { db in
                 return try Application
+                    .all()
+                    .filterStatuses(filteredStatuses)
                     .including(required: Application.status.aliased(statusAlias))
                     .order(sql: sortQuery)
                     .asRequest(of: ApplicationInfo.self)
@@ -153,4 +159,19 @@ class LocalDatabase {
         try migrator.migrate(self.dbQueue)
     }
     
+}
+
+extension DerivableRequest<Application> {
+    /// Selects only applications with a statusId in the given list, or all statuses if the list is empty.
+    ///
+    /// - Parameter statuses: List of statusIds to show. Leave empty to show all statuses.
+    func filterStatuses(_ statuses: [Int64]) -> Self {
+        guard statuses.count > 0 else {
+            return self
+        }
+        let idList = statuses.map { idNumber in
+            return "\(idNumber)"
+        }.joined(separator: ",")
+        return filter(sql: "statusId IN (\(idList))")
+    }
 }

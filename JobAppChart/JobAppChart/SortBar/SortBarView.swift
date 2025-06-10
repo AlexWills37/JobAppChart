@@ -11,24 +11,50 @@ struct SortBarView: View {
     @StateObject var vm: SortBarViewModel
     
     var body: some View {
-        HStack {
-            Toggle(isOn: $vm.groupByStatus) {
-                Text("Group by status")
+        VStack {
+            HStack {
+                Toggle(isOn: $vm.groupByStatus) {
+                    Text("Group by status")
+                }
+                .toggleStyle(.custom)
+                
+                Text("Sort by")
+                Picker(selection: $vm.sortOrder, label: Text("Sort by...")) {
+                    Text("Oldest first").tag(SortOption.oldestFirst)
+                    Text("Newest first").tag(SortOption.newestFirst)
+                }
+                .background(
+                    Rectangle().foregroundStyle(.white)
+                        .clipShape(.capsule)
+                )
+                .overlay(Capsule().stroke(.blue, lineWidth: 2))
             }
-            .toggleStyle(.custom)
-            
-            Text("Sort by")
-            Picker(selection: $vm.sortOrder, label: Text("Sort by...")) {
-                Text("Oldest first").tag(SortOption.oldestFirst)
-                Text("Newest first").tag(SortOption.newestFirst)
+            .padding(.horizontal)
+            ScrollView(.horizontal) {
+                
+                HStack {
+                    ForEach(vm.allStatuses) { status in
+                        
+                        Toggle(isOn: binding(for: status.id!))
+                        {
+                            Text(status.statusName)
+                        }
+                        .toggleStyle(.custom)
+                    }
+                }
+                .padding()
             }
-            .background(
-                Rectangle().foregroundStyle(.white)
-                    .clipShape(.capsule)
-            )
-            .overlay(Capsule().stroke(.blue, lineWidth: 2))
-        }
-        .padding(.horizontal)
+        } // End of VStack
+        
+    } // End of body
+    
+    // Solution for making a binding to a dictionary's values: https://dcordero.me/posts/binding-a-swift-dictionary-to-swiftui.html
+    private func binding(for key: Int64) -> Binding<Bool> {
+        return Binding(get: {
+            return self.vm.statusFilters[key] ?? false
+        }, set: {
+            self.vm.statusFilters[key] = $0
+        })
     }
 }
 
@@ -52,6 +78,8 @@ struct CustomToggleStyle: ToggleStyle {
         .buttonStyle(.bordered)
     }
 }
+
+
 
 extension ToggleStyle where Self == CustomToggleStyle {
     static var custom: CustomToggleStyle {.init()}

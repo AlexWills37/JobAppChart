@@ -16,6 +16,7 @@ class ApplicationItemListViewModel: ObservableObject {
     /// Exposes the user's sort preferences and the SQL queries that facilitate them.
     @Published var sortBar: SortBarViewModel = SortBarViewModel()
     var orderQuery: String = ""
+    var filteredStatuses: [Int64] = []
     
     /// Primary storage for the currently loaded View Models based on their application ID.
     var itemIdsToViewModels: [String: ApplicationItemViewModel] = [:]
@@ -39,8 +40,22 @@ class ApplicationItemListViewModel: ObservableObject {
                 self.updateOrder(groupByStatus: groupByStatus, dateSort: sortOption)
                 self.rebuildApplicationList(groupByStatus: groupByStatus)
             }.store(in: &subscriptions)
-
-    }
+        
+        // Subscription to update objects when the user's filter preferences change.
+        sortBar.$statusFilters
+            .map { dictionary in
+                dictionary.filter { element in
+                    element.value
+                }
+                .keys
+            }
+            .sink { [weak self] selectedKeys in
+                guard let self = self else {return}
+                self.filteredStatuses = Array(selectedKeys)
+                self.rebuildApplicationList(groupByStatus: self.sortBar.groupByStatus)
+            }
+            .store(in: &subscriptions)
+        }
     
     // MARK: - Maintaining the state of the list
     
@@ -50,7 +65,7 @@ class ApplicationItemListViewModel: ObservableObject {
     func rebuildApplicationList(groupByStatus: Bool = true) {
         self.groupedItemsToShow = []
         
-        let sortedApplicationInfos = LocalDatabase.shared.getAllApplicationsSorted(self.orderQuery)
+        let sortedApplicationInfos = LocalDatabase.shared.getAllApplicationsSorted(self.orderQuery, filteredStatuses: self.filteredStatuses)
         
         // Track the item IDs that are still in the database, so we can remove any items that are no longer present.
         var persistingItemIds: Set<String> = []
