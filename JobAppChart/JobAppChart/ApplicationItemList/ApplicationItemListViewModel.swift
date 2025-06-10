@@ -13,6 +13,10 @@ class ApplicationItemListViewModel: ObservableObject {
     /// List of View Model lists to build the view. Each list of View Models is a "group," intended to display together, separated from other groups.
     @Published var groupedItemsToShow: [[ApplicationItemViewModel]] = []
     
+    /// Exposes the user's sort preferences and the SQL queries that facilitate them.
+    @Published var sortBar: SortBarViewModel = SortBarViewModel()
+    var orderQuery: String = ""
+    
     /// Primary storage for the currently loaded View Models based on their application ID.
     var itemIdsToViewModels: [String: ApplicationItemViewModel] = [:]
     
@@ -20,30 +24,33 @@ class ApplicationItemListViewModel: ObservableObject {
     
     init() {
         
-        // Retrieve all applications from the database.
-        let loadedItemModels = LocalDatabase.shared.getAllApplicationsSorted()
-        print("Loaded \(loadedItemModels.count) items")
-        
-        // Create the ordered list for all the application records in the database.
-        rebuildGroupedList()
-        
         // Subscription to update objects when the applications table is altered.
         LocalDatabase.shared.getApplicationObservationPublisher()
             .sink { completion in } receiveValue: { [weak self] applications in
                 guard let self = self else {return}
-                self.rebuildGroupedList()
+                self.rebuildApplicationList(groupByStatus: sortBar.groupByStatus)
             }
             .store(in: &subscriptions)
+        
+        // Subscription to update objects when the user's sorting preferences change.
+        sortBar.$sortOrder.combineLatest(sortBar.$groupByStatus)
+            .sink { [weak self] sortOption, groupByStatus in
+                guard let self = self else {return}
+                self.updateOrder(groupByStatus: groupByStatus, dateSort: sortOption)
+                self.rebuildApplicationList(groupByStatus: groupByStatus)
+            }.store(in: &subscriptions)
 
     }
     
     // MARK: - Maintaining the state of the list
     
     /// Iterates through all Applications in the database and sorts/organizes them into the published list of VMs to display.
-    func rebuildGroupedList() {
+    ///
+    ///  - Parameter groupByStatus: Whether the retrieved list of applications should be split into groups of matching statuses. Defaults true. Set to false if the orderQuery does not begin by sorting by status.
+    func rebuildApplicationList(groupByStatus: Bool = true) {
         self.groupedItemsToShow = []
         
-        let sortedApplicationInfos = LocalDatabase.shared.getAllApplicationsSorted()
+        let sortedApplicationInfos = LocalDatabase.shared.getAllApplicationsSorted(self.orderQuery)
         
         // Track the item IDs that are still in the database, so we can remove any items that are no longer present.
         var persistingItemIds: Set<String> = []
@@ -66,7 +73,7 @@ class ApplicationItemListViewModel: ObservableObject {
             group.append(vm!)
             
             // Add the group to the list and start a new one if we are at the end of the current group.
-            if (i + 1 >= sortedApplicationInfos.count || sortedApplicationInfos[i + 1].status.id != current.status.id) {
+            if (i + 1 >= sortedApplicationInfos.count || (groupByStatus && sortedApplicationInfos[i + 1].status.id != current.status.id)) {
                 self.groupedItemsToShow.append(group)
                 group = []
             }
@@ -83,4 +90,20 @@ class ApplicationItemListViewModel: ObservableObject {
         }
     }
     
+    /// Builds the SQL query to order the list of applications, based on the user's selected order settings.
+    ///
+    /// - Parameters:
+    ///     - groupByStatus: Whether the search query should group applications based on their status.
+    ///     - dateSort: How the search query should sort applications based on their `dateApplied` field.
+    func updateOrder(groupByStatus: Bool = true, dateSort: SortOption) {
+        let dateAscending = dateSort == .oldestFirst
+        self.orderQuery = (groupByStatus ? "status.displayPriority DESC, " : "")
+        + "dateApplied " + (dateAscending ? "ASC" : "DESC")
+    }
+    
+}
+
+enum SortOption {
+    case newestFirst
+    case oldestFirst
 }
