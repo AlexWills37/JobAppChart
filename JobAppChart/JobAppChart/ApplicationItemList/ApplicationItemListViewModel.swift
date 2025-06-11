@@ -17,6 +17,7 @@ class ApplicationItemListViewModel: ObservableObject {
     @Published var sortBar: SortBarViewModel = SortBarViewModel()
     var orderQuery: String = ""
     var filteredStatuses: [Int64] = []
+    var searchQuery: String = ""
     
     /// Primary storage for the currently loaded View Models based on their application ID.
     var itemIdsToViewModels: [String: ApplicationItemViewModel] = [:]
@@ -55,7 +56,16 @@ class ApplicationItemListViewModel: ObservableObject {
                 self.rebuildApplicationList(groupByStatus: self.sortBar.groupByStatus)
             }
             .store(in: &subscriptions)
-        }
+        
+        // Subscription to update objects when the user's search query changes.
+        sortBar.$searchQuery
+            .sink { [weak self] newSearch in
+                guard let self = self else { return }
+                self.searchQuery = newSearch
+                self.rebuildApplicationList(groupByStatus: self.sortBar.groupByStatus)
+            }
+            .store(in: &subscriptions)
+    }
     
     // MARK: - Maintaining the state of the list
     
@@ -65,7 +75,7 @@ class ApplicationItemListViewModel: ObservableObject {
     func rebuildApplicationList(groupByStatus: Bool = true) {
         self.groupedItemsToShow = []
         
-        let sortedApplicationInfos = LocalDatabase.shared.getAllApplicationsSorted(self.orderQuery, filteredStatuses: self.filteredStatuses)
+        let sortedApplicationInfos = LocalDatabase.shared.getAllApplicationsSorted(self.orderQuery, filteredStatuses: self.filteredStatuses, searchQuery: self.searchQuery)
         
         // Track the item IDs that are still in the database, so we can remove any items that are no longer present.
         var persistingItemIds: Set<String> = []
