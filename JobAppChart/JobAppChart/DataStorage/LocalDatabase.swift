@@ -24,7 +24,7 @@ class LocalDatabase {
     ///   - sortQuery: SQL statement to insert in the ORDER BY clause. Defaults to sorting by `displayPriority DESC, dateApplied DESC`.
     ///   - filteredStatuses: List of Status IDs to include in the search. Leave blank to include all statuses.
     /// - Returns: Ordered list of ApplicationInfo objects.
-    func getAllApplicationsSorted(_ sortQuery: String = "status.displayPriority DESC, dateApplied DESC", filteredStatuses: [Int64] = []) -> [ApplicationInfo] {
+    func getAllApplicationsSorted(_ sortQuery: String = "status.displayPriority DESC, dateApplied DESC", filteredStatuses: [Int64] = [], searchQuery: String = "") -> [ApplicationInfo] {
         var allApplications: [ApplicationInfo] = []
         let statusAlias: TableAlias<Status> = TableAlias<Status>()
         
@@ -33,6 +33,7 @@ class LocalDatabase {
                 return try Application
                     .all()
                     .filterStatuses(filteredStatuses)
+                    .filterBySearch(searchQuery)
                     .including(required: Application.status.aliased(statusAlias))
                     .order(sql: sortQuery)
                     .asRequest(of: ApplicationInfo.self)
@@ -173,5 +174,14 @@ extension DerivableRequest<Application> {
             return "\(idNumber)"
         }.joined(separator: ",")
         return filter(sql: "statusId IN (\(idList))")
+    }
+    
+    func filterBySearch(_ toSearch: String) -> Self {
+        guard toSearch.count > 0 else {
+            return self
+        }
+        
+        let sql = "companyName LIKE '%\(toSearch)%' OR positionTitle LIKE '%\(toSearch)%'"
+        return filter(sql: sql)
     }
 }

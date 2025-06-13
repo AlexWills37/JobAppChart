@@ -13,6 +13,8 @@ class SortBarViewModel: ObservableObject {
     var allStatuses: [Status] = []
     @Published var statusFilters: [Int64: Bool] = [:]
     
+    @Published var searchQuery: String = ""
+    
     init() {
         self.allStatuses = LocalDatabase.shared.getAllStatuses()
         for status in self.allStatuses {

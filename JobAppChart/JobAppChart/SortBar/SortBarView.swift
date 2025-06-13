@@ -44,6 +44,12 @@ struct SortBarView: View {
                 }
                 .padding()
             }
+    
+            TextField("Search", text: $vm.searchQuery)
+                .padding(.horizontal)
+                .background(
+                    Capsule().foregroundStyle(Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))))
+                .padding(.horizontal)
         } // End of VStack
         
     } // End of body
