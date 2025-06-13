@@ -10,6 +10,7 @@ import UserNotifications
 
 struct ApplicationListScreenView: View {
     @State var show = true
+    @State var showNewApplicationModal = false
     var body: some View {
         NavigationStack(){
             ZStack {
@@ -24,8 +25,8 @@ struct ApplicationListScreenView: View {
                             ApplicationEditorView(vm: ApplicationEditorViewModel(toEdit: itemVM.model))
                         }
                 }
-                NavigationLink {
-                    ApplicationEditorView()
+                Button {
+                    showNewApplicationModal = true
                 } label: {
                     HStack{
                         Image(systemName: "plus")
@@ -41,8 +42,9 @@ struct ApplicationListScreenView: View {
                     .padding()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                
-            }
+                .sheet(isPresented: $showNewApplicationModal) {
+                    ApplicationEditorView()
+                }
 
         }
 
