@@ -73,6 +73,15 @@ class LocalDatabase {
         }
     }
     
+    /// Retrieves an application from the database based on its ID.
+    ///
+    /// - Returns: The Application associated with the ID, or nil if the ID could not be found.
+    func getApplication(_ id: String) -> Application? {
+        return try? dbQueue.read { db in
+            try Application.filter {$0.id == id}.fetchOne(db)
+        }
+    }
+    
     /// Adds or updates an application in the database.
     ///
     /// - Parameter application: The new/existing application, whose values will be set to the database, using the `application.id` as its primary key.
