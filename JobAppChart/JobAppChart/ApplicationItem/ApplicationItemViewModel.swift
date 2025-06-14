@@ -91,7 +91,7 @@ class ApplicationItemViewModel: ObservableObject, Identifiable, Hashable {
     
     /// Calculates the days since the `dateApplied` value, storing it in `daysSinceUpdate`.
     func updateDaysSinceStatusUpdate() {
-        self.daysSinceUpdate = Calendar.current.dateComponents([.day], from: dateApplied, to: Date.now).day!
+        self.daysSinceUpdate = self.model.daysSinceApplication
     }
     
     // MARK: - Conforming to Hashable and Equatable

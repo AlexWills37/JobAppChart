@@ -25,6 +25,11 @@ struct Application: Codable, Identifiable, FetchableRecord, PersistableRecord, H
     /// Foreign key to this application's status.
     var statusId: Int64
     
+    /// Number of days from `dateApplied` to today. Computed property.
+    var daysSinceApplication: Int {
+        return Calendar.current.dateComponents([.day], from: self.dateApplied, to: Date.now).day!
+    }
+    
     static let status = belongsTo(Status.self)
     
     init(companyName: String = "", positionTitle: String = "", dateApplied: Date = Date.now, status: Status, websiteLink: String = "") {
