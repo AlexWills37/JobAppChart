@@ -9,7 +9,6 @@ import SwiftUI
 import UserNotifications
 
 struct ApplicationListScreenView: View {
-    @State var show = true
     @State var showNewApplicationModal = false
     var body: some View {
         NavigationStack(){
@@ -22,7 +21,8 @@ struct ApplicationListScreenView: View {
                         .padding(.horizontal)
                     ApplicationItemListView()
                         .navigationDestination(for: ApplicationItemViewModel.self) { itemVM in
-                            ApplicationEditorView(vm: ApplicationEditorViewModel(toEdit: itemVM.model))
+                            ApplicationItemDetailView(vm:
+                                                        ApplicationItemDetailViewModel(applicationModel: itemVM.model))
                         }
                 }
                 Button {
@@ -45,7 +45,7 @@ struct ApplicationListScreenView: View {
                 .sheet(isPresented: $showNewApplicationModal) {
                     ApplicationEditorView()
                 }
-
+            }
         }
 
    }
