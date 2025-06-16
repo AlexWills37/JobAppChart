@@ -12,7 +12,7 @@ struct ApplicationItemDetailView: View {
     @State var displayEditor: Bool = false
     @StateObject var vm: ApplicationItemDetailViewModel
     var body: some View {
-        VStack {
+        VStack(spacing: 10) {
             // MARK: - Title bar
             HStack {
                 Button {
@@ -30,7 +30,7 @@ struct ApplicationItemDetailView: View {
                     displayEditor = true
                 }
                 .fullScreenCover(isPresented: $displayEditor) {
-                    vm.refreshModelProxies()
+                    vm.refreshApplicationModel()
                 } content: {
                     ApplicationEditorView(vm: vm.editor)
                 }
@@ -41,18 +41,55 @@ struct ApplicationItemDetailView: View {
             // MARK: - Content
             Text(vm.pageTitle)
                 .font(.title2)
-            Text(vm.positionTitle)
+            
+            HStack{
+                Text(vm.websiteLink)
+            }
+            
+            Text("Status: \(vm.statusName)")
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundStyle(vm.statusColor)
+                )
+            
+            // Date applied
+            HStack(alignment: .top) {
+                Text("Applied on")
+                VStack {
+                    Text(vm.dateApplied.formatted(date: .abbreviated, time: .omitted))
+                    Text("(\(vm.daysSinceApplication) days ago)")
+                }
+            }
+            
+            // Notes
+            VStack (alignment: .leading) {
+                HStack{
+                    Text("Notes")
+                    Spacer()
+                }
+                if (vm.notes.count > 0) {
+                    Text(vm.notes)
+                } else {
+                    Text("No notes")
+                        .italic()
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 20)
+            
 
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
-//        Text("Hello \(LocalDatabase.shared.getStatus(vm.toDisplay.statusId)?.statusName ?? "na")")
     }
 }
 
 #Preview {
     
-    let app: Application = LocalDatabase.shared.getAllApplicationsSorted()[0].application
+//    let app: Application = LocalDatabase.shared.getAllApplicationsSorted()[0].application
+    let status: Status = Status(id: 0, statusName: "Test", color: 0xFF00FF, pickerPriority: 10, displayPriority: 10)
+    let app: Application = Application(companyName: "Test Company", positionTitle: "Developer", dateApplied: Date.now, status: status, websiteLink: "google.com")
     
     ApplicationItemDetailView(vm: ApplicationItemDetailViewModel(applicationModel: app))
 }
