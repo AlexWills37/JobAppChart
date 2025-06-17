@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ApplicationItemListView: View {
-    let gradientSpacerSize = 70.0
+    let gradientSpacerSize = 40.0
     
     @StateObject var vm = ApplicationItemListViewModel()
     var body: some View {
@@ -41,10 +41,10 @@ struct ApplicationItemListView: View {
 
                 }
                 .mask(
-                    LinearGradient(colors: [Color.black, Color.black.opacity(0)], startPoint: UnitPoint(x: 0.5, y: 0.9), endPoint: .bottom)
+                    LinearGradient(colors: [Color.black, Color.black.opacity(0)], startPoint: UnitPoint(x: 0.5, y: 0.95), endPoint: .bottom)
                 )
                 .mask(
-                    LinearGradient(colors: [Color.black, Color.black.opacity(0)], startPoint: UnitPoint(x: 0.5, y: 0.1), endPoint: .top)
+                    LinearGradient(colors: [Color.black, Color.black.opacity(0)], startPoint: UnitPoint(x: 0.5, y: 0.05), endPoint: .top)
                 )
                 // End of scroll view
             } // End of VStack
