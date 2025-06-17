@@ -9,8 +9,9 @@ import SwiftUI
 
 struct SortBarView: View {
     @StateObject var vm: SortBarViewModel
+    @State var showSortBar: Bool = false
     
-    var body: some View {
+    var sortBar: some View {
         VStack {
             HStack {
                 Toggle(isOn: $vm.groupByStatus) {
@@ -51,6 +52,28 @@ struct SortBarView: View {
                     Capsule().foregroundStyle(Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1))))
                 .padding(.horizontal)
         } // End of VStack
+    }
+    var body: some View {
+        Button {
+            withAnimation {
+                showSortBar.toggle()
+            }
+        } label: {
+            HStack {
+                Text("Sort and organize")
+                Image(systemName: "chevron.down.circle")
+                    .rotationEffect(.degrees(showSortBar ? -180 : 0))
+                    .animation(.easeInOut, value: showSortBar)
+                        
+                Spacer()
+            }
+        }
+        .padding(.horizontal)
+
+        if showSortBar {
+            sortBar
+        }
+        
         
     } // End of body
     

@@ -18,7 +18,7 @@ struct ApplicationListScreenView: View {
                     Text("Applications")
                         .font(.title)
                     
-                        .padding(.horizontal)
+                        .padding([.leading, .bottom, .trailing])
                     ApplicationItemListView()
                         .navigationDestination(for: ApplicationItemViewModel.self) { itemVM in
                             ApplicationItemDetailView(vm:
