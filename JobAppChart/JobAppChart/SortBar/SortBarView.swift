@@ -13,6 +13,7 @@ struct SortBarView: View {
     
     var sortBar: some View {
         VStack {
+            // MARK: Group/Sort
             HStack {
                 Toggle(isOn: $vm.groupByStatus) {
                     Text("Group by status")
@@ -31,6 +32,8 @@ struct SortBarView: View {
                 .overlay(Capsule().stroke(.blue, lineWidth: 2))
             }
             .padding(.horizontal)
+            
+            // MARK: Status filtering
             ScrollView(.horizontal) {
                 
                 HStack {
@@ -46,6 +49,7 @@ struct SortBarView: View {
                 .padding()
             }
     
+            // MARK: Text search
             TextField("Search", text: $vm.searchQuery)
                 .padding(.horizontal)
                 .background(
@@ -53,7 +57,10 @@ struct SortBarView: View {
                 .padding(.horizontal)
         } // End of VStack
     }
+    
     var body: some View {
+        
+        // Toggle the entire sort bar with animations
         Button {
             withAnimation {
                 showSortBar.toggle()
@@ -87,7 +94,8 @@ struct SortBarView: View {
     }
 }
 
-struct CustomToggleStyle: ToggleStyle {
+/// Displays the toggle as a capsule that fills in when active.
+struct CapsuleToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         Button {
             configuration.isOn.toggle()
@@ -108,10 +116,9 @@ struct CustomToggleStyle: ToggleStyle {
     }
 }
 
-
-
-extension ToggleStyle where Self == CustomToggleStyle {
-    static var custom: CustomToggleStyle {.init()}
+// Adds custom style for easy usage.
+extension ToggleStyle where Self == CapsuleToggleStyle {
+    static var custom: CapsuleToggleStyle {.init()}
 }
 
 #Preview {
